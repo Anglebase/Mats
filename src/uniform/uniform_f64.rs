@@ -1,4 +1,5 @@
-use super::{Mat, SetUniform};
+use super::SetUniform;
+use crate::Mat;
 
 impl SetUniform for Mat<f64, 1, 2> {
     fn give(&self, location: i32) {
