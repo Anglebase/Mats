@@ -2,10 +2,11 @@
 name = "mats"
 version = "0.1.0"
 edition = "2021"
+dedcription = "用于处理矩阵和向量的 Rust 库 | A Rust library for handling matrices and vectors"
 
 [dependencies]
-gl = "0.14.0"
+gl = { version = "0.14.0", optional = true }
 
 [features]
-glsl = []
+glsl = ["gl"]
 default = ["glsl"]
