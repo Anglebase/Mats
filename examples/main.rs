@@ -1,13 +1,3 @@
-# Mats
-
-这个 crate 包含了矩阵及其常用数学操作的实现
-
-如果启用特性 `glsl` ，那么可以通过它的 trait `SetUniform` 与 GLSL 中的 uniform 变量交互
-
-# 示例
-
-这是一个简单的示例
-```rust
 use mats::*;
 
 fn main() {
@@ -25,4 +15,3 @@ fn main() {
     let vec3 = Vec4::from((vec.xy(), vec2.zw()));
     println!("{:?}", vec3);
 }
-```
