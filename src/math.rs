@@ -1,17 +1,19 @@
-use std::ops::{AddAssign, Div, Mul, Sub};
+use std::ops::*;
 
 use super::*;
 
 impl<T, const M: usize, const N: usize> Mat<T, M, N>
 where
-    T: Copy + Into<f32> + Sub<Output = T>,
+    T: Copy + PartialOrd + From<f32>,
+    T: Sub<Output = T> + Neg<Output = T>,
 {
     /// Matrix equality comparisons that allow floating-point errors.
-    pub fn eq_with_epsilon(&self, other: &Self, epsilon: f32) -> bool {
+    pub fn eq_with_epsilon(&self, other: &Self, epsilon: T) -> bool {
         for i in 0..M {
             for j in 0..N {
-                let diff: f32 = (self[i][j] - other[i][j]).into();
-                if diff.abs() > epsilon {
+                let diff = self[i][j] - other[i][j];
+                let diff = if diff > T::from(0.0) { diff } else { -diff };
+                if diff > epsilon {
                     return false;
                 }
             }
@@ -60,6 +62,100 @@ where
         result.set_y(*self.z() * *other.x() - *self.x() * *other.z());
         result.set_z(*self.x() * *other.y() - *self.y() * *other.x());
         result
+    }
+}
+
+impl<T, const M: usize> Mat<T, M, M>
+where
+    T: Copy + From<f32> + PartialEq + Default,
+    T: Mul<Output = T> + Sub<Output = T> + Div<Output = T>,
+{
+    /// LU decomposition is performed on the matrix.
+    ///
+    /// # Return
+    /// It will return a tuple containing two matrices:
+    ///     - The first matrix is the lower triangular matrix.
+    ///     - The second matrix is the upper triangle matrix.
+    ///
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::from([
+    ///     [1.0, 2.0, 3.0],
+    ///     [4.0, 5.0, 6.0],
+    ///     [7.0, 8.0, 9.0]
+    /// ]);
+    /// let (l, u) = a.lu();
+    ///
+    /// assert_eq!(l, Mat::from([
+    ///     [1.0, 0.0, 0.0],
+    ///     [4.0, 1.0, 0.0],
+    ///     [7.0, 2.0, 1.0]
+    /// ]));
+    /// assert_eq!(u, Mat::from([
+    ///     [1.0,  2.0,  3.0],
+    ///     [0.0, -3.0, -6.0],
+    ///     [0.0,  0.0,  0.0]
+    /// ]));
+    /// assert_eq!(l * u, a);
+    /// ```
+    pub fn lu(&self) -> (Mat<T, M, M>, Mat<T, M, M>) {
+        let mut l = Mat::I();
+        let mut u = *self;
+        for i in 0..M {
+            for j in i + 1..M {
+                if u[i][i] == T::from(0.0) {
+                    u.swap_row(i, M - 1);
+                }
+                let m = if u[i][i] == T::from(0.0) {
+                    T::from(0.0)
+                } else {
+                    u[j][i] / u[i][i]
+                };
+                l[j][i] = m;
+                for k in i..M {
+                    u[j][k] = u[j][k] - m * u[i][k];
+                }
+            }
+        }
+        (l, u)
+    }
+}
+
+impl<T, const M: usize> Mat<T, M, M>
+where
+    T: Copy + From<f32> + PartialEq + Default,
+    T: Mul<Output = T> + Sub<Output = T> + Div<Output = T>,
+    T: MulAssign,
+{
+    /// Calculate the determinant value of the matrix.
+    ///
+    /// # Return
+    ///
+    /// The determinant value of the matrix.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::from([
+    ///     [1.0, 2.0, 3.0],
+    ///     [4.0, 5.0, 6.0],
+    ///     [7.0, 8.0, 9.0]
+    /// ]);
+    /// assert_eq!(a.det(), 0.0);
+    /// ```
+    pub fn det(&self) -> T {
+        let (l, u) = self.lu();
+        let mut det = T::from(1.0);
+        for i in 0..M {
+            det *= l[i][i] * u[i][i];
+        }
+        det
     }
 }
 
@@ -636,5 +732,48 @@ mod tests {
                 [0.0, 0.0, 0.0, 1.0],
             ])
         );
+    }
+
+    #[test]
+    fn lu_1() {
+        let mat = Mat4::from([
+            [1.0, 2.0, 3.0, 4.0],
+            [5.0, 6.0, 7.0, 8.0],
+            [9.0, 10.0, 11.0, 12.0],
+            [13.0, 14.0, 15.0, 16.0],
+        ]);
+        let (l, u) = mat.lu();
+        assert_eq!(
+            l,
+            Mat4::from([
+                [1.0, 0.0, 0.0, 0.0],
+                [5.0, 1.0, 0.0, 0.0],
+                [9.0, 2.0, 1.0, 0.0],
+                [13.0, 3.0, 0.0, 1.0],
+            ])
+        );
+        assert_eq!(
+            u,
+            Mat4::from([
+                [1.0, 2.0, 3.0, 4.0],
+                [0.0, -4.0, -8.0, -12.0],
+                [0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0],
+            ])
+        );
+        assert_eq!(l * u, mat);
+    }
+
+    #[test]
+    fn lu_2() {
+        use crate::*;
+        let mat = Mat4::from([
+            [3.0, 9.0, 4.0, 7.0],
+            [8.0, 2.0, 9.0, 10.0],
+            [4.0, 1.0, 3.0, 10.0],
+            [7.0, 6.0, 6.0, 1.0],
+        ]);
+        let (l, u) = mat.lu();
+        assert!(mat.eq_with_epsilon(&(l * u), 1e-6))
     }
 }
