@@ -159,6 +159,68 @@ where
     }
 }
 
+impl<T, const M: usize> Mat<T, M, M>
+where
+    T: Copy + Default + From<f32> + PartialOrd,
+    T: DivAssign + SubAssign + Mul<Output = T>,
+{
+    /// Calculate the inverse matrix of the matrix
+    /// 
+    /// # Return
+    /// 
+    /// The function returns an `Option`:
+    /// - If the matrix is invertible, it will return a `Some(x)` value containing the inverse matrix.
+    /// - If the matrix is irreversible, it will return `None`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::from([
+    ///     [1.0, 2.0, 3.0],
+    ///     [4.0, 5.0, 6.0],
+    ///     [7.0, 8.0, 9.0]
+    /// ]);
+    /// assert_eq!(a.inverse(), None);
+    /// 
+    /// let mat = Mat::from([
+    ///     [1.0, 2.0, 3.0],
+    ///     [4.0, 7.0, 6.0],
+    ///     [7.0, 8.0, 9.0]
+    /// ]);
+    /// assert!(Mat::<f64,3,3>::I().eq_with_epsilon(&(mat * mat.inverse().unwrap()), 1e-6));
+    /// ```
+    pub fn inverse(&self) -> Option<Self> {
+        let mut it = *self;
+        let mut ext = Self::I();
+        // Gauss-Jordan elimination method
+        for i in 0..M {
+            let mut it_row_i = Vec::from([it[i]]);
+            let mut ext_row_i = Vec::from([ext[i]]);
+            if T::from(-1e-10) < it[i][i] && it[i][i] < T::from(1e-10) {
+                return None;
+            }
+            it_row_i /= it[i][i];
+            ext_row_i /= it[i][i];
+            it[i] = it_row_i[0];
+            ext[i] = ext_row_i[0];
+            for j in 0..M {
+                if i != j {
+                    let mut it_row_j = Vec::from([it[j]]);
+                    let mut ext_row_j = Vec::from([ext[j]]);
+                    it_row_j -= it_row_i * it[j][i];
+                    ext_row_j -= ext_row_i * it[j][i];
+                    it[j] = it_row_j[0];
+                    ext[j] = ext_row_j[0];
+                }
+            }
+        }
+
+        Some(ext)
+    }
+}
+
 /// Generate a 2D rotation transformation matrix.
 ///
 /// # Parameters
@@ -775,5 +837,30 @@ mod tests {
         ]);
         let (l, u) = mat.lu();
         assert!(mat.eq_with_epsilon(&(l * u), 1e-6))
+    }
+
+    #[test]
+    fn inverse() {
+        let mat = Mat3::from([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]);
+        assert_eq!(mat.inverse(), None);
+
+        let mat = Mat3::from([[1.0, 2.0, 3.0], [4.0, 7.0, 6.0], [7.0, 8.0, 9.0]]);
+        assert!(Mat3::<f64>::I().eq_with_epsilon(&(mat * mat.inverse().unwrap()), 1e-6));
+
+        let mat = Mat4::from([
+            [1.0, 2.0, 3.0, 4.0],
+            [5.0, 6.0, 7.0, 8.0],
+            [9.0, 10.0, 11.0, 12.0],
+            [13.0, 14.0, 15.0, 16.0],
+        ]);
+        assert_eq!(mat.inverse(), None);
+
+        let mat = Mat4::from([
+            [1.0, 2.0, 3.0, 4.0],
+            [5.0, 9.0, 7.0, 8.0],
+            [9.0, 10.0, 11.0, 1.0],
+            [13.0, 14.0, 15.0, 16.0],
+        ]);
+        assert!(Mat4::<f64>::I().eq_with_epsilon(&(mat * mat.inverse().unwrap()), 1e-6));
     }
 }
