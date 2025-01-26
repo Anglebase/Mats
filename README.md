@@ -1,12 +1,10 @@
 # Mats
 
-这个 crate 包含了矩阵及其常用数学操作的实现
+Mats is a lightweight Rust matrix math library designed to provide efficient and easy-to-use Rust vector and matrix support.
 
-如果启用特性 `glsl` ，那么可以通过它的 trait `SetUniform` 与 GLSL 中的 uniform 变量交互
+# Example
 
-# 示例
-
-这是一个简单的示例
+Here's a simple example:
 ```rust
 use mats::*;
 
@@ -26,3 +24,7 @@ fn main() {
     println!("{:?}", vec3);
 }
 ```
+
+# Features
+
++ `glsl` : If this feature is enabled, you can make Mats integrate well with OpenGL.
