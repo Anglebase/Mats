@@ -315,3 +315,26 @@ impl<T, const M: usize, const N: usize> Mat<T, M, N> {
         M * N
     }
 }
+
+impl<T, const M: usize, const N: usize> Mat<T, M, N>
+where
+    T: Copy + Default,
+{
+    /// Swap two rows of the matrix.
+    ///
+    /// # Parameters
+    /// - `i`,`j` : The row index which to be swapped.
+    pub fn swap_row(&mut self, i: usize, j: usize) {
+        self.data.swap(i, j);
+    }
+
+    /// Swap two columns of the matrix.
+    ///
+    /// # Parameters
+    /// - `i`,`j` : The column index which to be swapped.
+    pub fn swap_col(&mut self, i: usize, j: usize) {
+        for row in self.data.iter_mut() {
+            row.swap(i, j);
+        }
+    }
+}
