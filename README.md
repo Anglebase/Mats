@@ -51,6 +51,7 @@ fn main() {
   + Swap two rows
   + Swap two columns
   + Inverse
+  + Rank
 + GLSL Extension
   + Types
   + Like GLSL syntax
