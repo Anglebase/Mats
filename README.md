@@ -28,3 +28,30 @@ fn main() {
 # Features
 
 + `glsl` : If this feature is enabled, you can make Mats integrate well with OpenGL.
+
+# Support
+
+*A vector is a matrix with a number of rows of 1.*
+
++ Operator Overloading:
+  + `Mat + Mat`
+  + `Mat - Mat`
+  + `Mat * T`
+  + `Mat / T`
+  + `Mat += Mat`
+  + `Mat -= Mat`
+  + `Mat *= T`
+  + `Mat /= T`
+  + `Mat * Mat`
+  + `- Mat`
++ Matrix Operations:
+  + Matrix transpose
+  + The determinant
+  + LU decomposition
+  + Swap two rows
+  + Swap two columns
+  + Inverse
++ GLSL Extension
+  + Types
+  + Like GLSL syntax
+  + (Option:`glsl`) GLSL data interface
