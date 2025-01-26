@@ -1,8 +1,8 @@
 [package]
 name = "mats"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
-description = "用于处理矩阵和向量的 Rust 库 | A Rust library for handling matrices and vectors"
+description = "A Rust library for handling matrices and vectors."
 repository = "https://github.com/Anglebase/Mats.git"
 license = "MIT"
 
