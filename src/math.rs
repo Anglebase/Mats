@@ -165,9 +165,9 @@ where
     T: DivAssign + SubAssign + Mul<Output = T>,
 {
     /// Calculate the inverse matrix of the matrix
-    /// 
+    ///
     /// # Return
-    /// 
+    ///
     /// The function returns an `Option`:
     /// - If the matrix is invertible, it will return a `Some(x)` value containing the inverse matrix.
     /// - If the matrix is irreversible, it will return `None`.
@@ -183,7 +183,7 @@ where
     ///     [7.0, 8.0, 9.0]
     /// ]);
     /// assert_eq!(a.inverse(), None);
-    /// 
+    ///
     /// let mat = Mat::from([
     ///     [1.0, 2.0, 3.0],
     ///     [4.0, 7.0, 6.0],
@@ -218,6 +218,57 @@ where
         }
 
         Some(ext)
+    }
+}
+
+impl<T, const M: usize, const N: usize> Mat<T, M, N>
+where
+    T: Copy + Default + PartialEq,
+    T: SubAssign + Mul<Output = T> + Div<Output = T>,
+{
+    /// Calculate the rank of the matrix
+    ///
+    /// # Return
+    ///
+    /// The rank of the matrix
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use mats::{Mat3, Mat4};
+    /// let mat = Mat3::from([
+    ///     [1.0, 2.0, 3.0],
+    ///     [4.0, 5.0, 6.0],
+    ///     [7.0, 8.0, 9.0]
+    /// ]);
+    /// assert_eq!(mat.rank(), 2);
+    ///
+    /// assert_eq!(Mat4::<f32>::new().rank(), 0);
+    /// ```
+    pub fn rank(&self) -> usize {
+        let mut it = *self;
+        for i in 0..M {
+            let row_i = Vec::from([it[i]]);
+            if it[i][i] == T::default() {
+                continue;
+            }
+            for j in i + 1..M {
+                let mut row_j = Vec::from([it[j]]);
+                row_j -= row_i * (it[j][i] / it[i][i]);
+                it[j] = row_j[0];
+            }
+        }
+
+        let mut rank = 0;
+        for i in 0..M {
+            for j in 0..N {
+                if it[i][j] != T::default() {
+                    rank += 1;
+                    break;
+                }
+            }
+        }
+        rank
     }
 }
 
@@ -862,5 +913,21 @@ mod tests {
             [13.0, 14.0, 15.0, 16.0],
         ]);
         assert!(Mat4::<f64>::I().eq_with_epsilon(&(mat * mat.inverse().unwrap()), 1e-6));
+    }
+
+    #[test]
+    fn rank() {
+        let mat = Mat3::from([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]);
+        assert_eq!(mat.rank(), 2);
+
+        let mat = Mat4::from([
+            [1.0, 2.0, 3.0, 4.0],
+            [5.0, 6.0, 7.0, 8.0],
+            [9.0, 10.0, 11.0, 12.0],
+            [13.0, 14.0, 15.0, 16.0],
+        ]);
+        assert_eq!(mat.rank(), 2);
+
+        assert_eq!(Mat4::<f32>::new().rank(), 0);
     }
 }
