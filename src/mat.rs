@@ -1,4 +1,10 @@
-/// 一个 M 行 N 列的行主序矩阵
+/// A matrix of row primary order for an M x N.
+///
+/// # Generic Parameters
+///
+/// - `T` : The type of matrix element
+/// - `M` : The number of rows of the matrix
+/// - `N` : The number of columns in the matrix
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Mat<T, const M: usize, const N: usize> {
     data: [[T; N]; M],
@@ -39,7 +45,18 @@ impl<T, const M: usize, const N: usize> Mat<T, M, N>
 where
     T: Default + Copy,
 {
-    /// 创建一个 M 行 N 列的零矩阵
+    /// Create a zero matrix of M x N
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use mats::Mat;
+    ///
+    /// let mat1 = Mat::<f32, 2,3>::new();
+    /// let mat2 = Mat::from([[0.0f32;3];2]);
+    ///
+    /// assert_eq!(mat1, mat2);
+    /// ```
     pub fn new() -> Self {
         Self {
             data: [[T::default(); N]; M],
@@ -244,7 +261,7 @@ impl<T, const M: usize, const N: usize> Mat<T, M, N>
 where
     T: Copy + Default,
 {
-    /// 生成当前矩阵的转置矩阵
+    /// Generates a transpose matrix for the current matrix
     #[allow(non_snake_case)]
     pub fn T(&self) -> Mat<T, N, M> {
         let mut result = Mat::<T, N, M>::new();
@@ -256,6 +273,7 @@ where
         result
     }
 
+    /// It is same as `T()` method.
     pub fn transpose(&self) -> Mat<T, N, M> {
         self.T()
     }
@@ -265,7 +283,7 @@ impl<T, const M: usize> Mat<T, M, M>
 where
     T: Copy + From<f32>,
 {
-    /// 生成单位矩阵
+    /// Generate an identity matrix
     #[allow(non_snake_case)]
     pub fn I() -> Self {
         let mut result = Self {
@@ -277,21 +295,22 @@ where
         result
     }
 
+    /// It is same as `I()` method.
     pub fn identity() -> Self {
         Self::I()
     }
 }
 
 impl<T, const M: usize, const N: usize> Mat<T, M, N> {
-    /// 返回矩阵的行数
+    /// Get the number of rows of the matrix.
     pub fn rows(&self) -> usize {
         M
     }
-    /// 返回矩阵的列数
+    /// Get the number of columns of the matrix.
     pub fn cols(&self) -> usize {
         N
     }
-    /// 返回矩阵的元素个数
+    /// Get the number of elements of the matrix.
     pub fn count(&self) -> usize {
         M * N
     }

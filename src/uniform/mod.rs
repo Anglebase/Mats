@@ -1,4 +1,18 @@
-/// 设置着色器uniform变量的trait
+/// This trait is a unified interface for setting shader variables.
+///
+/// To enable this feature, you need to add the following dependencies
+/// to your Cargo.toml:
+///
+/// ```toml
+/// [dependencies]
+/// mats = { version = "...", features = ["glsl"] }
+/// ```
+///
+/// The matrix memory layout in Mats is continuous, and it is also possible
+/// to interact directly by calling the API from the address of the element
+/// `[0][0]`, this trait just provides a unified interface.
+/// It is important to note that **Mats's matrix is a row primary order matrix
+/// and needs to be transposed when using API calls**.
 pub trait SetUniform {
     fn give(&self, location: i32);
 }

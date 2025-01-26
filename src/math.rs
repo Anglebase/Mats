@@ -6,7 +6,7 @@ impl<T, const M: usize, const N: usize> Mat<T, M, N>
 where
     T: Copy + Into<f32> + Sub<Output = T>,
 {
-    /// 容许浮点误差等比较
+    /// Matrix equality comparisons that allow floating-point errors.
     pub fn eq_with_epsilon(&self, other: &Self, epsilon: f32) -> bool {
         for i in 0..M {
             for j in 0..N {
@@ -25,7 +25,7 @@ where
     T: Copy + Default + Into<f32>,
     T: AddAssign + Mul<Output = T>,
 {
-    /// 计算向量的模长
+    /// Calculate the modulus length of the vector.
     pub fn norm(&self) -> f32 {
         let s: f32 = (*self * self.transpose())[0][0].into();
         s.sqrt().into()
@@ -38,7 +38,7 @@ where
     T: AddAssign + Mul<Output = T> + Div<Output = T>,
     T: From<f32>,
 {
-    /// 将向量归一化
+    /// Normalize vector.
     pub fn normalize(&self) -> Self {
         let norm = self.norm();
         if norm == 0.0 {
@@ -53,7 +53,7 @@ where
     T: Copy + Default + Into<f32>,
     T: Mul<Output = T> + Sub<Output = T>,
 {
-    /// 计算两个向量的叉乘
+    /// Calculate the cross product of two vectors.
     pub fn cross(&self, other: Self) -> Self {
         let mut result = Self::new();
         result.set_x(*self.y() * *other.z() - *self.z() * *other.y());
@@ -63,57 +63,57 @@ where
     }
 }
 
-/// 生成二维旋转变换矩阵
+/// Generate a 2D rotation transformation matrix.
 ///
-/// # 参数
+/// # Parameters
 ///
-/// - `angle` 旋转角度，单位为弧度
+/// - `angle` : The angle of rotation in radians.
 ///
-/// # 返回值
+/// # Return
 ///
-/// 旋转矩阵
+/// Rotation matrix
 pub fn rotate2(angle: f32) -> Mat3<f32> {
     let c = angle.cos();
     let s = angle.sin();
     Mat3::from([[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]])
 }
 
-/// 生成二维平移变换矩阵
+/// Generate a 2D translational transformation matrix.
 ///
-/// # 参数
+/// # Parameters
 ///
-/// - `v` 平移向量
+/// - `v` : Pan vector.
 ///
-/// # 返回值
+/// # Return
 ///
-/// 平移矩阵
-pub fn tranlate2(v: Vec2<f32>) -> Mat3<f32> {
+/// Translation matrix.
+pub fn translate2(v: Vec2<f32>) -> Mat3<f32> {
     Mat3::from([[1.0, 0.0, *v.x()], [0.0, 1.0, *v.y()], [0.0, 0.0, 1.0]])
 }
 
-/// 生成二维缩放变换矩阵
+/// Generate a 2D scaled transformation matrix.
 ///
-/// # 参数
+/// # Parameter
 ///
-/// - `v` 缩放因子
+/// - `v` : Scale factor.
 ///
-/// # 返回值
+/// # Return
 ///
-/// 缩放矩阵
+/// Scale matrix.
 pub fn scale2(v: Vec2<f32>) -> Mat3<f32> {
     Mat3::from([[*v.x(), 0.0, 0.0], [0.0, *v.y(), 0.0], [0.0, 0.0, 1.0]])
 }
 
-/// 生成三维旋转变换矩阵
+/// Generate a 3D rotation transformation matrix.
 ///
-/// # 参数
+/// # Parameters
 ///
-/// - `angle` 旋转角度，单位为弧度
-/// - `axis` 旋转轴
+/// - `angle` : The angle of rotation in radians.
+/// - `axis` : Rotary shaft.
 ///
-/// # 返回值
+/// # Return
 ///
-/// 旋转矩阵
+/// Rotation matrix.
 pub fn rotate3(angle: f32, axis: Vec3<f32>) -> Mat4<f32> {
     let mut result = Mat4::I();
     let axis = axis.normalize();
@@ -133,16 +133,16 @@ pub fn rotate3(angle: f32, axis: Vec3<f32>) -> Mat4<f32> {
     result
 }
 
-/// 生成三维平移变换矩阵
+/// Generate a 3D translational transformation matrix.
 ///
-/// # 参数
+/// # Parameters
 ///
-/// - `v` 平移向量
+/// - `v` : Pan vector.
 ///
-/// # 返回值
+/// # Return
 ///
-/// 平移矩阵
-pub fn tranlate3(v: Vec3<f32>) -> Mat4<f32> {
+/// Translation matrix.
+pub fn translate3(v: Vec3<f32>) -> Mat4<f32> {
     Mat4::from([
         [1.0, 0.0, 0.0, *v.x()],
         [0.0, 1.0, 0.0, *v.y()],
@@ -151,15 +151,15 @@ pub fn tranlate3(v: Vec3<f32>) -> Mat4<f32> {
     ])
 }
 
-/// 生成三维缩放变换矩阵
+/// Generate a 3D scale transformation matrix
 ///
-/// # 参数
+/// # Parameters
 ///
-/// - `v` 缩放因子
+/// - `v` : Scale factor
 ///
-/// # 返回值
+/// # Return
 ///
-/// 缩放矩阵
+/// Scale the matrix
 pub fn scale3(v: Vec3<f32>) -> Mat4<f32> {
     Mat4::from([
         [*v.x(), 0.0, 0.0, 0.0],
@@ -169,15 +169,15 @@ pub fn scale3(v: Vec3<f32>) -> Mat4<f32> {
     ])
 }
 
-/// 生成三维绕x轴旋转变换矩阵
+/// A 3D rotation transformation matrix around the x-axis is generated
 ///
-/// # 参数
+/// # Parameters
 ///
-/// - `angle` 旋转角度，单位为弧度
+/// - `angle` : The angle of rotation in radians
 ///
-/// # 返回值
+/// # Return
 ///
-/// 旋转矩阵
+/// Rotation matrix
 pub fn rotate3_x(angle: f32) -> Mat4<f32> {
     let c = angle.cos();
     let s = angle.sin();
@@ -189,15 +189,15 @@ pub fn rotate3_x(angle: f32) -> Mat4<f32> {
     ])
 }
 
-/// 生成三维绕y轴旋转变换矩阵
+/// A 3D rotation transformation matrix around the y-axis is generated
 ///
-/// # 参数
+/// # Parameters
 ///
-/// - `angle` 旋转角度，单位为弧度
+/// - `angle` : The angle of rotation in radians
 ///
-/// # 返回值
+/// # Return
 ///
-/// 旋转矩阵
+/// Rotation matrix
 pub fn rotate3_y(angle: f32) -> Mat4<f32> {
     let c = angle.cos();
     let s = angle.sin();
@@ -209,15 +209,15 @@ pub fn rotate3_y(angle: f32) -> Mat4<f32> {
     ])
 }
 
-/// 生成三维绕z轴旋转变换矩阵
+/// A 3D rotation transformation matrix is generated about the z-axis
 ///
-/// # 参数
+/// # Parameters
 ///
-/// - `angle` 旋转角度，单位为弧度
+/// - `angle` : The angle of rotation in radians
 ///
-/// # 返回值
+/// # Return
 ///
-/// 旋转矩阵
+/// Rotation matrix
 pub fn rotate3_z(angle: f32) -> Mat4<f32> {
     let c = angle.cos();
     let s = angle.sin();
@@ -227,6 +227,104 @@ pub fn rotate3_z(angle: f32) -> Mat4<f32> {
         [0.0, 0.0, 1.0, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ])
+}
+
+/// Angle system to radian system
+///
+/// # Parameters
+///
+/// - `degrees` : Angle system angle
+///
+/// # Return
+///
+/// Radian angles
+///
+/// # Example
+///
+/// ```
+/// use mats::radian;
+///
+/// let radian = radian(90.0);
+/// assert_eq!(radian, std::f32::consts::PI / 2.0);
+/// ```
+pub fn radian(degrees: f32) -> f32 {
+    degrees * std::f32::consts::PI / 180.0
+}
+
+/// Generate a matrix of camera position transformations
+///
+/// # Parameters
+///
+/// - `eye` : Camera position
+/// - `target` : Target position
+/// - `up` : Upper vector
+///
+/// # Return
+///
+/// Positional Transformation Matrix
+///
+/// # Example
+///
+/// ```
+/// use mats::{look_at,Vec3};
+///
+/// let eye = Vec3::from([0.0, 0.0, 1.0]);
+/// let target = Vec3::from([0.0, 0.0, 0.0]);
+/// let up = Vec3::from([0.0, 1.0, 0.0]);
+/// let matrix = look_at(eye, target, up);
+/// ```
+pub fn look_at(eye: Vec3<f32>, target: Vec3<f32>, up: Vec3<f32>) -> Mat4<f32> {
+    let z = (eye - target).normalize(); // 计算z轴方向向量
+    let x = up.cross(z).normalize(); // 计算x轴方向向量
+    let y = z.cross(x); // 计算y轴方向向量
+
+    let translation = [
+        [1.0, 0.0, 0.0, -eye.x()],
+        [0.0, 1.0, 0.0, -eye.y()],
+        [0.0, 0.0, 1.0, -eye.z()],
+        [0.0, 0.0, 0.0, 1.0],
+    ];
+    let rotation = [
+        [*x.x(), *x.y(), *x.z(), 0.0],
+        [*y.x(), *y.y(), *y.z(), 0.0],
+        [*z.x(), *z.y(), *z.z(), 0.0],
+        [0.0, 0.0, 0.0, 1.0],
+    ];
+
+    Mat4::from(rotation) * Mat4::from(translation)
+}
+
+/// Generate a perspective projection matrix
+///
+/// # Parameters
+///
+/// - `fov` : Filed of view
+/// - `aspect` Aspect ratio
+/// - `z_near` Near cut plane
+/// - `z_far` Far cut face
+///
+/// # Return
+///
+/// Perspective projection matrix
+///
+/// # Example
+///
+/// ```
+/// use mats::perspective;
+///
+/// let matrix = perspective(45.0, 1.0, 0.1, 100.0);
+/// ```
+pub fn perspective(fov: f32, aspect: f32, z_near: f32, z_far: f32) -> Mat4<f32> {
+    let f = 1.0 / (fov / 2.0).tan();
+    let mut result = [[0.0; 4]; 4];
+
+    result[0][0] = f / aspect;
+    result[1][1] = f;
+    result[2][2] = (z_far + z_near) / (z_near - z_far);
+    result[2][3] = (2.0 * z_far * z_near) / (z_near - z_far);
+    result[3][2] = -1.0;
+
+    Mat4::from(result)
 }
 
 #[cfg(test)]
@@ -332,7 +430,7 @@ mod tests {
     #[test]
     fn test_translate2_happy_path() {
         let v = Vec2::from([1.0, 2.0]);
-        let matrix = tranlate2(v);
+        let matrix = translate2(v);
         assert_eq!(
             matrix,
             Mat3::from([[1.0, 0.0, 1.0], [0.0, 1.0, 2.0], [0.0, 0.0, 1.0]])
@@ -342,7 +440,7 @@ mod tests {
     #[test]
     fn test_translate2_zero_vector() {
         let v = Vec2::new();
-        let matrix = tranlate2(v);
+        let matrix = translate2(v);
         assert_eq!(
             matrix,
             Mat3::from([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
@@ -491,7 +589,7 @@ mod tests {
     #[test]
     fn test_translate3_happy_path() {
         let v = Vec3::from([1.0, 2.0, 3.0]);
-        let matrix = tranlate3(v);
+        let matrix = translate3(v);
         assert_eq!(
             matrix,
             Mat4::from([
@@ -506,7 +604,7 @@ mod tests {
     #[test]
     fn test_translate3_zero_vector() {
         let v = Vec3::new();
-        let matrix = tranlate3(v);
+        let matrix = translate3(v);
         assert!(matrix.eq_with_epsilon(&Mat4::I(), 1e-6));
     }
 
@@ -539,103 +637,4 @@ mod tests {
             ])
         );
     }
-}
-
-/// 角度制转弧度制
-///
-/// # 参数
-///
-/// - `degrees` 角度制角度
-///
-/// # 返回值
-///
-/// 弧度制角度
-///
-/// # 示例
-///
-/// ```
-/// use rustcraft::utils::radian;
-///
-/// let radian = radian(90.0);
-/// assert_eq!(radian, std::f32::consts::PI / 2.0);
-/// ```
-pub fn radian(degrees: f32) -> f32 {
-    degrees * std::f32::consts::PI / 180.0
-}
-
-/// 生成摄像机位置变换矩阵
-///
-/// # 参数
-///
-/// - `eye` 摄像机位置
-/// - `target` 目标位置
-/// - `up` 上向量
-///
-/// # 返回值
-///
-/// 位置变换矩阵
-///
-/// # 示例
-///
-/// ```
-/// use rustcraft::utils::look_at;
-/// use rustcraft::utils::Vec3;
-///
-/// let eye = Vec3::from([0.0, 0.0, 1.0]);
-/// let target = Vec3::from([0.0, 0.0, 0.0]);
-/// let up = Vec3::from([0.0, 1.0, 0.0]);
-/// let matrix = look_at(eye, target, up);
-/// ```
-pub fn look_at(eye: Vec3<f32>, target: Vec3<f32>, up: Vec3<f32>) -> Mat4<f32> {
-    let z = (eye - target).normalize(); // 计算z轴方向向量
-    let x = up.cross(z).normalize(); // 计算x轴方向向量
-    let y = z.cross(x); // 计算y轴方向向量
-
-    let translation = [
-        [1.0, 0.0, 0.0, -eye.x()],
-        [0.0, 1.0, 0.0, -eye.y()],
-        [0.0, 0.0, 1.0, -eye.z()],
-        [0.0, 0.0, 0.0, 1.0],
-    ];
-    let rotation = [
-        [*x.x(), *x.y(), *x.z(), 0.0],
-        [*y.x(), *y.y(), *y.z(), 0.0],
-        [*z.x(), *z.y(), *z.z(), 0.0],
-        [0.0, 0.0, 0.0, 1.0],
-    ];
-
-    Mat4::from(rotation) * Mat4::from(translation)
-}
-
-/// 生成透视投影矩阵
-///
-/// # 参数
-///
-/// - `fov` 视角
-/// - `aspect` 纵横比
-/// - `z_near` 近裁切面
-/// - `z_far` 远裁切面
-///
-/// # 返回值
-///
-/// 透视投影矩阵
-///
-/// # 示例
-///
-/// ```
-/// use rustcraft::utils::perspective;
-///
-/// let matrix = perspective(45.0, 1.0, 0.1, 100.0);
-/// ```
-pub fn perspective(fov: f32, aspect: f32, z_near: f32, z_far: f32) -> Mat4<f32> {
-    let f = 1.0 / (fov / 2.0).tan();
-    let mut result = [[0.0; 4]; 4];
-
-    result[0][0] = f / aspect;
-    result[1][1] = f;
-    result[2][2] = (z_far + z_near) / (z_near - z_far);
-    result[2][3] = (2.0 * z_far * z_near) / (z_near - z_far);
-    result[3][2] = -1.0;
-
-    Mat4::from(result)
 }
