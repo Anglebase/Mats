@@ -303,15 +303,15 @@ where
 
 impl<T, const M: usize, const N: usize> Mat<T, M, N> {
     /// Get the number of rows of the matrix.
-    pub fn rows(&self) -> usize {
+    pub const fn rows(&self) -> usize {
         M
     }
     /// Get the number of columns of the matrix.
-    pub fn cols(&self) -> usize {
+    pub const fn cols(&self) -> usize {
         N
     }
     /// Get the number of elements of the matrix.
-    pub fn count(&self) -> usize {
+    pub const fn count(&self) -> usize {
         M * N
     }
 }
