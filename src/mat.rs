@@ -1,4 +1,4 @@
-/// A matrix of row primary order for an M x N.
+/// A static size matrix of row primary order for an M x N.
 ///
 /// # Generic Parameters
 ///
@@ -16,7 +16,13 @@ where
     T: Debug,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Mat<{:?}, {:?}> {{", M, N)?;
+        writeln!(
+            f,
+            "Mat<{}, {:?}, {:?}> {{",
+            std::any::type_name::<T>(),
+            M,
+            N
+        )?;
         for i in 0..M {
             write!(f, "| ")?;
             for j in 0..N {
@@ -43,9 +49,32 @@ impl<T, const M: usize, const N: usize> Into<[[T; N]; M]> for Mat<T, M, N> {
 
 impl<T, const M: usize, const N: usize> Mat<T, M, N>
 where
+    T: Copy,
+{
+    /// Create a matrix of M x N with the given value
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use mats::Mat;
+    ///
+    /// let mat1 = Mat::<f32, 2,3>::new_with_init(1.0);
+    /// let mat2 = Mat::from([[1.0f32;3];2]);
+    ///
+    /// assert_eq!(mat1, mat2);
+    /// ```
+    pub fn new_with_init(init: T) -> Self {
+        Self {
+            data: [[init; N]; M],
+        }
+    }
+}
+
+impl<T, const M: usize, const N: usize> Mat<T, M, N>
+where
     T: Default + Copy,
 {
-    /// Create a zero matrix of M x N
+    /// Create a matrix of M x N with default values of T::default()
     ///
     /// # Example
     ///
@@ -58,9 +87,7 @@ where
     /// assert_eq!(mat1, mat2);
     /// ```
     pub fn new() -> Self {
-        Self {
-            data: [[T::default(); N]; M],
-        }
+        Self::new_with_init(T::default())
     }
 }
 
