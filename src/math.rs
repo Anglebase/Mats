@@ -1,4 +1,4 @@
-use std::ops::*;
+use std::{fmt::Debug, ops::*};
 
 use super::*;
 
@@ -123,14 +123,7 @@ where
         }
         (l, u)
     }
-}
 
-impl<T, const M: usize> Mat<T, M, M>
-where
-    T: Copy + From<f32> + PartialEq + Default,
-    T: Mul<Output = T> + Sub<Output = T> + Div<Output = T>,
-    T: MulAssign,
-{
     /// Calculate the determinant value of the matrix.
     ///
     /// # Return
@@ -153,7 +146,7 @@ where
         let (l, u) = self.lu();
         let mut det = T::from(1.0);
         for i in 0..M {
-            det *= l[i][i] * u[i][i];
+            det = det * l[i][i] * u[i][i];
         }
         det
     }
@@ -161,7 +154,7 @@ where
 
 impl<T, const M: usize> Mat<T, M, M>
 where
-    T: Copy + Default + From<f32> + PartialOrd,
+    T: Copy + Default + From<f32> + PartialOrd + Debug,
     T: DivAssign + SubAssign + Mul<Output = T>,
 {
     /// Calculate the inverse matrix of the matrix
