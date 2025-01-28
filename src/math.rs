@@ -75,7 +75,7 @@ where
     /// # Return
     /// It will return a tuple containing two matrices:
     ///     - The first matrix is the lower triangular matrix.
-    ///     - The second matrix is the upper triangle matrix.
+    ///     - The second matrix is the upper triangular matrix.
     ///
     ///
     /// # Example
