@@ -1,6 +1,7 @@
 mod mat;
 mod math;
 mod types;
+pub mod dynamic;
 
 pub use mat::Mat;
 pub use math::*;
