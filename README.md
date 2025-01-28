@@ -52,7 +52,11 @@ fn main() {
   + Swap two columns
   + Inverse
   + Rank
++ Dynamic size matrices
 + GLSL Extension
   + Types
   + Like GLSL syntax
   + (Option:`glsl`) GLSL data interface
++ Math:
+  + Cooordinate transformations
+  + Projection transformations
