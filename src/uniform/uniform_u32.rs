@@ -24,3 +24,16 @@ impl SetUniform for Mat<u32, 1, 4> {
         }
     }
 }
+
+impl SetUniform for crate::dynamic::Mat<u32> {
+    fn give(&self, location: i32) {
+        unsafe {
+            match (self.rows(), self.cols()) {
+                (1, 2) => gl::Uniform2uiv(location, 1, &self[(0, 0)]),
+                (1, 3) => gl::Uniform3uiv(location, 1, &self[(0, 0)]),
+                (1, 4) => gl::Uniform4uiv(location, 1, &self[(0, 0)]),
+                _ => panic!("Invalid matrix size for uniform"),
+            }
+        }
+    }
+}
