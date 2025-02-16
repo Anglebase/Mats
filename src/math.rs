@@ -529,6 +529,57 @@ pub fn perspective(fov: f32, aspect: f32, z_near: f32, z_far: f32) -> Mat4<f32> 
     Mat4::from(result)
 }
 
+/// Generate a orthographic projection matrix
+///
+/// # Parameters
+///
+/// - `left` : Left
+/// - `right` : Right
+/// - `top` : Top
+/// - `botton` : Bottom
+/// - `z_near` : Near
+/// - `z_far` : Far
+///
+/// # Return
+///
+/// Orthographic projection matrix
+///
+/// # Example
+///
+/// ```
+/// use mats::ortho;
+///
+/// let matrix = ortho((0.0, 800.0), (0.0, 600.0), 0.1, 100.0);
+/// ```
+pub fn ortho(
+    (left, right): (f32, f32),
+    (top, botton): (f32, f32),
+    z_near: f32,
+    z_far: f32,
+) -> Mat4<f32> {
+    Mat4::from([
+        [
+            2.0 / (right - left),
+            0.0,
+            0.0,
+            (left + right) / (left - right),
+        ],
+        [
+            0.0,
+            2.0 / (top - botton),
+            0.0,
+            (botton + top) / (botton - top),
+        ],
+        [
+            0.0,
+            0.0,
+            2.0 / (z_near - z_far),
+            (z_near + z_far) / (z_near - z_far),
+        ],
+        [0.0, 0.0, 0.0, 1.0],
+    ])
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
