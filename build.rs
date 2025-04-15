@@ -57,6 +57,7 @@ fn gen_code(path: &PathBuf) {
                 format!("Vec{}<T>", ls.len())
             };
             if is_valid(ls, has) {
+                writeln!(file, "    /// GLSL syntax: v.{}",ls.join("")).unwrap();
                 writeln!(file, "    pub fn {}(&self) -> {} {{", ls.join(""), res_type).unwrap();
                 if ls.len() > 1 {
                     writeln!(file, "        Vec{}::from([[", ls.len()).unwrap();
