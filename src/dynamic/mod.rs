@@ -1,4 +1,4 @@
-//! Dynamic
+//! Dynamic size matrix
 //!
 //! This defines the runtime size matrix,
 //! and the size of the matrix can be dynamically changed at runtime.
