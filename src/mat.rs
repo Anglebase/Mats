@@ -131,11 +131,15 @@ where
 
     fn add(self, rhs: Self) -> Self::Output {
         let mut result = Self::new();
-        for i in 0..M {
-            for j in 0..N {
-                result.data[i][j] = self.data[i][j] + rhs.data[i][j];
-            }
-        }
+        result
+            .data
+            .iter_mut()
+            .zip(self.data.iter().zip(rhs.data.iter()))
+            .for_each(|(res, (a, b))| {
+                res.iter_mut()
+                    .zip(a.iter().zip(b.iter()))
+                    .for_each(|(res, (a, b))| *res = *a + *b)
+            });
         result
     }
 }
@@ -149,11 +153,15 @@ where
 
     fn sub(self, rhs: Self) -> Self::Output {
         let mut result = Self::new();
-        for i in 0..M {
-            for j in 0..N {
-                result.data[i][j] = self.data[i][j] - rhs.data[i][j];
-            }
-        }
+        result
+            .data
+            .iter_mut()
+            .zip(self.data.iter().zip(rhs.data.iter()))
+            .for_each(|(res, (a, b))| {
+                res.iter_mut()
+                    .zip(a.iter().zip(b.iter()))
+                    .for_each(|(res, (a, b))| *res = *a - *b)
+            });
         result
     }
 }
@@ -167,11 +175,15 @@ where
 
     fn mul(self, rhs: T) -> Self::Output {
         let mut result = Self::new();
-        for i in 0..M {
-            for j in 0..N {
-                result.data[i][j] = self.data[i][j] * rhs;
-            }
-        }
+        result
+            .data
+            .iter_mut()
+            .zip(self.data.iter())
+            .for_each(|(res, a)| {
+                res.iter_mut()
+                    .zip(a.iter())
+                    .for_each(|(res, a)| *res = *a * rhs)
+            });
         result
     }
 }
@@ -185,11 +197,15 @@ where
 
     fn div(self, rhs: T) -> Self::Output {
         let mut result = Self::new();
-        for i in 0..M {
-            for j in 0..N {
-                result.data[i][j] = self.data[i][j] / rhs;
-            }
-        }
+        result
+            .data
+            .iter_mut()
+            .zip(self.data.iter())
+            .for_each(|(res, a)| {
+                res.iter_mut()
+                    .zip(a.iter())
+                    .for_each(|(res, a)| *res = *a / rhs)
+            });
         result
     }
 }
@@ -200,11 +216,14 @@ where
     T: Copy + Default + AddAssign,
 {
     fn add_assign(&mut self, rhs: Self) {
-        for i in 0..M {
-            for j in 0..N {
-                self.data[i][j] += rhs.data[i][j];
-            }
-        }
+        self.data
+            .iter_mut()
+            .zip(rhs.data.iter())
+            .for_each(|(lhs, rhs)| {
+                lhs.iter_mut()
+                    .zip(rhs.iter())
+                    .for_each(|(lhs, rhs)| *lhs += *rhs);
+            });
     }
 }
 
@@ -214,11 +233,14 @@ where
     T: Copy + Default + SubAssign,
 {
     fn sub_assign(&mut self, rhs: Self) {
-        for i in 0..M {
-            for j in 0..N {
-                self.data[i][j] -= rhs.data[i][j];
-            }
-        }
+        self.data
+            .iter_mut()
+            .zip(rhs.data.iter())
+            .for_each(|(lhs, rhs)| {
+                lhs.iter_mut()
+                    .zip(rhs.iter())
+                    .for_each(|(lhs, rhs)| *lhs -= *rhs);
+            });
     }
 }
 
@@ -228,11 +250,9 @@ where
     T: Copy + Default + MulAssign,
 {
     fn mul_assign(&mut self, rhs: T) {
-        for i in 0..M {
-            for j in 0..N {
-                self.data[i][j] *= rhs;
-            }
-        }
+        self.data.iter_mut().for_each(|lhs| {
+            lhs.iter_mut().for_each(|lhs| *lhs *= rhs);
+        });
     }
 }
 
@@ -242,11 +262,9 @@ where
     T: Copy + Default + DivAssign,
 {
     fn div_assign(&mut self, rhs: T) {
-        for i in 0..M {
-            for j in 0..N {
-                self.data[i][j] /= rhs;
-            }
-        }
+        self.data.iter_mut().for_each(|lhs| {
+            lhs.iter_mut().for_each(|lhs| *lhs /= rhs);
+        });
     }
 }
 
@@ -312,11 +330,11 @@ where
     #[allow(non_snake_case)]
     pub fn T(&self) -> Mat<T, N, M> {
         let mut result = Mat::<T, N, M>::new();
-        for i in 0..M {
-            for j in 0..N {
-                result.data[j][i] = self.data[i][j];
-            }
-        }
+        result.data.iter_mut().enumerate().for_each(|(i, r)| {
+            r.iter_mut().enumerate().for_each(|(j, c)| {
+                *c = self.data[j][i];
+            });
+        });
         result
     }
 
@@ -336,9 +354,9 @@ where
         let mut result = Self {
             data: [[0.0.into(); M]; M],
         };
-        for i in 0..M {
-            result.data[i][i] = T::from(1.0);
-        }
+        result.data.iter_mut().for_each(|r| {
+            r.iter_mut().for_each(|v| *v = T::from(1.0));
+        });
         result
     }
 
