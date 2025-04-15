@@ -10,6 +10,26 @@ pub struct Mat<T, const M: usize, const N: usize> {
     data: [[T; N]; M],
 }
 
+impl<T, const M: usize, const N: usize> Mat<T, M, N>
+where
+    T: Copy + PartialOrd + From<f32>,
+    T: Sub<Output = T> + Neg<Output = T>,
+{
+    /// Matrix equality comparisons that allow floating-point errors.
+    pub fn eq_with_epsilon(&self, other: &Self, epsilon: T) -> bool {
+        for (this, other) in self.data.iter().zip(other.data.iter()) {
+            for (a, b) in this.iter().zip(other.iter()) {
+                let diff = *a - *b;
+                let diff = if diff > T::from(0.0) { diff } else { -diff };
+                if diff > epsilon {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+}
+
 use std::fmt::Debug;
 impl<T, const M: usize, const N: usize> Debug for Mat<T, M, N>
 where
