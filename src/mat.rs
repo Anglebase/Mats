@@ -354,9 +354,9 @@ where
         let mut result = Self {
             data: [[0.0.into(); M]; M],
         };
-        result.data.iter_mut().for_each(|r| {
-            r.iter_mut().for_each(|v| *v = T::from(1.0));
-        });
+        for i in 0..M {
+            result.data[i][i] = T::from(1.0);
+        }
         result
     }
 
