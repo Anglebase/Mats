@@ -18,12 +18,6 @@ pub type Mat4x2<T> = Mat<T, 4, 2>;
 pub type Mat4x3<T> = Mat<T, 4, 3>;
 
 impl<T> Vec2<T> {
-    pub fn x(&self) -> &T {
-        &self[0][0]
-    }
-    pub fn y(&self) -> &T {
-        &self[0][1]
-    }
     pub fn set_x(&mut self, value: T) {
         self[0][0] = value;
     }
@@ -33,15 +27,6 @@ impl<T> Vec2<T> {
 }
 
 impl<T> Vec3<T> {
-    pub fn x(&self) -> &T {
-        &self[0][0]
-    }
-    pub fn y(&self) -> &T {
-        &self[0][1]
-    }
-    pub fn z(&self) -> &T {
-        &self[0][2]
-    }
     pub fn set_x(&mut self, value: T) {
         self[0][0] = value;
     }
@@ -54,18 +39,6 @@ impl<T> Vec3<T> {
 }
 
 impl<T> Vec4<T> {
-    pub fn x(&self) -> &T {
-        &self[0][0]
-    }
-    pub fn y(&self) -> &T {
-        &self[0][1]
-    }
-    pub fn z(&self) -> &T {
-        &self[0][2]
-    }
-    pub fn w(&self) -> &T {
-        &self[0][3]
-    }
     pub fn set_x(&mut self, value: T) {
         self[0][0] = value;
     }
@@ -77,45 +50,6 @@ impl<T> Vec4<T> {
     }
     pub fn set_w(&mut self, value: T) {
         self[0][3] = value;
-    }
-}
-
-impl<T: Copy> Vec2<T> {
-    pub fn xy(&self) -> Self {
-        *self
-    }
-}
-
-impl<T: Copy> Vec3<T> {
-    pub fn xyz(&self) -> Self {
-        *self
-    }
-    pub fn xy(&self) -> Vec2<T> {
-        Vec2::from([[self[0][0], self[0][1]]])
-    }
-    pub fn yz(&self) -> Vec2<T> {
-        Vec2::from([[self[0][1], self[0][2]]])
-    }
-}
-
-impl<T: Copy> Vec4<T> {
-    pub fn xyzw(&self) -> Self {
-        *self
-    }
-    pub fn xy(&self) -> Vec2<T> {
-        Vec2::from([[self[0][0], self[0][1]]])
-    }
-    pub fn yz(&self) -> Vec2<T> {
-        Vec2::from([[self[0][1], self[0][2]]])
-    }
-    pub fn zw(&self) -> Vec2<T> {
-        Vec2::from([[self[0][2], self[0][3]]])
-    }
-    pub fn xyz(&self) -> Vec3<T> {
-        Vec3::from([[self[0][0], self[0][1], self[0][2]]])
-    }
-    pub fn yzw(&self) -> Vec3<T> {
-        Vec3::from([[self[0][1], self[0][2], self[0][3]]])
     }
 }
 

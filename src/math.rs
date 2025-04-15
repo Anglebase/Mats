@@ -38,9 +38,9 @@ where
     /// Calculate the cross product of two vectors.
     pub fn cross(&self, other: Self) -> Self {
         let mut result = Self::new();
-        result.set_x(*self.y() * *other.z() - *self.z() * *other.y());
-        result.set_y(*self.z() * *other.x() - *self.x() * *other.z());
-        result.set_z(*self.x() * *other.y() - *self.y() * *other.x());
+        result.set_x(self.y() * other.z() - self.z() * other.y());
+        result.set_y(self.z() * other.x() - self.x() * other.z());
+        result.set_z(self.x() * other.y() - self.y() * other.x());
         result
     }
 }
@@ -270,7 +270,7 @@ pub fn rotate2(angle: f32) -> Mat3<f32> {
 ///
 /// Translation matrix.
 pub fn translate2(v: Vec2<f32>) -> Mat3<f32> {
-    Mat3::from([[1.0, 0.0, *v.x()], [0.0, 1.0, *v.y()], [0.0, 0.0, 1.0]])
+    Mat3::from([[1.0, 0.0, v.x()], [0.0, 1.0, v.y()], [0.0, 0.0, 1.0]])
 }
 
 /// Generate a 2D scaled transformation matrix.
@@ -283,7 +283,7 @@ pub fn translate2(v: Vec2<f32>) -> Mat3<f32> {
 ///
 /// Scale matrix.
 pub fn scale2(v: Vec2<f32>) -> Mat3<f32> {
-    Mat3::from([[*v.x(), 0.0, 0.0], [0.0, *v.y(), 0.0], [0.0, 0.0, 1.0]])
+    Mat3::from([[v.x(), 0.0, 0.0], [0.0, v.y(), 0.0], [0.0, 0.0, 1.0]])
 }
 
 /// Generate a 3D rotation transformation matrix.
@@ -302,9 +302,9 @@ pub fn rotate3(angle: f32, axis: Vec3<f32>) -> Mat4<f32> {
     let c = angle.cos();
     let s = angle.sin();
     let k = Mat::from([
-        [0.0, -*axis.z(), *axis.y()],
-        [*axis.z(), 0.0, -*axis.x()],
-        [-*axis.y(), *axis.x(), 0.0],
+        [0.0, -axis.z(), axis.y()],
+        [axis.z(), 0.0, -axis.x()],
+        [-axis.y(), axis.x(), 0.0],
     ]);
     let r = Mat3::I() + k * s + (k * k) * (1.0 - c);
     for i in 0..3 {
@@ -326,9 +326,9 @@ pub fn rotate3(angle: f32, axis: Vec3<f32>) -> Mat4<f32> {
 /// Translation matrix.
 pub fn translate3(v: Vec3<f32>) -> Mat4<f32> {
     Mat4::from([
-        [1.0, 0.0, 0.0, *v.x()],
-        [0.0, 1.0, 0.0, *v.y()],
-        [0.0, 0.0, 1.0, *v.z()],
+        [1.0, 0.0, 0.0, v.x()],
+        [0.0, 1.0, 0.0, v.y()],
+        [0.0, 0.0, 1.0, v.z()],
         [0.0, 0.0, 0.0, 1.0],
     ])
 }
@@ -344,9 +344,9 @@ pub fn translate3(v: Vec3<f32>) -> Mat4<f32> {
 /// Scale the matrix
 pub fn scale3(v: Vec3<f32>) -> Mat4<f32> {
     Mat4::from([
-        [*v.x(), 0.0, 0.0, 0.0],
-        [0.0, *v.y(), 0.0, 0.0],
-        [0.0, 0.0, *v.z(), 0.0],
+        [v.x(), 0.0, 0.0, 0.0],
+        [0.0, v.y(), 0.0, 0.0],
+        [0.0, 0.0, v.z(), 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ])
 }
@@ -467,9 +467,9 @@ pub fn look_at(eye: Vec3<f32>, target: Vec3<f32>, up: Vec3<f32>) -> Mat4<f32> {
         [0.0, 0.0, 0.0, 1.0],
     ];
     let rotation = [
-        [*x.x(), *x.y(), *x.z(), 0.0],
-        [*y.x(), *y.y(), *y.z(), 0.0],
-        [*z.x(), *z.y(), *z.z(), 0.0],
+        [x.x(), x.y(), x.z(), 0.0],
+        [y.x(), y.y(), y.z(), 0.0],
+        [z.x(), z.y(), z.z(), 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ];
 
