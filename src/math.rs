@@ -1,4 +1,4 @@
-use crate::{Mat, Zero};
+use crate::{Mat, Zero, types::Vec3};
 
 impl<T, const ROWS: usize, const COLS: usize> Mat<ROWS, COLS, T>
 where
@@ -49,8 +49,30 @@ where
     }
 }
 
-// impl<T> crate::types::Vec3<T> {
-//     pub fn cross(&self, other: &crate::types::Vec3<T>) -> crate::types::Vec3<T> {
-
-//     }
-// }
+impl<T> crate::types::Vec3<T>
+where
+    T: Copy + std::ops::Sub<Output = T> + std::ops::Mul<Output = T>,
+{
+    /// Computes the cross product of two vectors.
+    ///
+    /// The result is a new vector
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::types::Vec3;
+    /// 
+    /// let a = Vec3::new([[1, 2, 3]]);
+    /// let b = Vec3::new([[4, 5, 6]]);
+    /// 
+    /// let c = a.cross(&b);
+    /// 
+    /// assert_eq!(c, Vec3::new([[-3, 6, -3]]));
+    /// ```
+    pub fn cross(&self, other: &crate::types::Vec3<T>) -> crate::types::Vec3<T> {
+        Vec3::new([[
+            self.y() * other.z() - self.z() * other.y(),
+            self.z() * other.x() - self.x() * other.z(),
+            self.x() * other.y() - self.y() * other.x(),
+        ]])
+    }
+}
