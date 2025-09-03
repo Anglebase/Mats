@@ -57,7 +57,34 @@ fn gen_code(path: &PathBuf) {
                 format!("Vec{}<T>", ls.len())
             };
             if is_valid(ls, has) {
-                writeln!(file, "    /// GLSL syntax: v.{}",ls.join("")).unwrap();
+                writeln!(file, "    /// GLSL syntax: v.{}", ls.join("")).unwrap();
+                writeln!(file, "    ///").unwrap();
+                writeln!(file, "    /// # Example").unwrap();
+                writeln!(file, "    /// ```").unwrap();
+                writeln!(file, "    /// use mats::types::*;").unwrap();
+                writeln!(file, "    ///").unwrap();
+                let args = (0..i)
+                    .into_iter()
+                    .map(|i| format!("{}", i))
+                    .collect::<Vec<_>>()
+                    .join(", ");
+                writeln!(file, "    /// let v = Vec{}::new([[{}]]);", i, args).unwrap();
+                writeln!(file, "    ///").unwrap();
+                let left = format!("v.{}()", ls.join(""));
+                let right = if ls.len() == 1 {
+                    format!("{}", map[ls[0]])
+                } else {
+                    format!(
+                        "Vec{}::new([[{}]])",
+                        ls.len(),
+                        ls.iter()
+                            .map(|s| format!("{}", map[s]))
+                            .collect::<Vec<_>>()
+                            .join(", ")
+                    )
+                };
+                writeln!(file, "    /// assert_eq!({}, {});", left, right).unwrap();
+                writeln!(file, "    /// ```").unwrap();
                 writeln!(file, "    pub fn {}(&self) -> {} {{", ls.join(""), res_type).unwrap();
                 if ls.len() > 1 {
                     writeln!(file, "        Vec{}::new([[", ls.len()).unwrap();

@@ -223,5 +223,6 @@ mod tests {
 
         assert_eq!(Vec3::from((v1.x(), v2.xy())), Vec3::new([[1.0, 4.0, 5.0]]));
         assert_eq!(Vec3::from((v1.yz(), v2.y())), Vec3::new([[2.0, 3.0, 5.0]]));
+        assert_eq!(Vec4::from((v1.yy(), v2.zz())), Vec4::new([[2.0, 2.0, 6.0, 6.0]]));
     }
 }
