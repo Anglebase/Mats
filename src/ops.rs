@@ -1,4 +1,4 @@
-use crate::Mat;
+use crate::{Mat, Zero};
 
 impl<T, const ROWS: usize, const COLS: usize> std::ops::Add<Self> for Mat<ROWS, COLS, T>
 where
@@ -136,5 +136,77 @@ where
             }
         }
         self
+    }
+}
+
+impl<T, const ROWS: usize, const COLS: usize, const OTHER_COLS: usize>
+    std::ops::Mul<Mat<COLS, OTHER_COLS, T>> for Mat<ROWS, COLS, T>
+where
+    T: Copy + Zero + std::ops::AddAssign + std::ops::Mul<Output = T>,
+{
+    type Output = Mat<ROWS, OTHER_COLS, T>;
+
+    /// Computes the dot product of two matrices.
+    ///
+    /// The result is a new matrix with `ROWS` rows and `OTHER_COLS` columns, where
+    /// `OTHER_COLS` is the number of columns in the second matrix.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::<3, 2, i32>::new([[1, 3, -4], [-2, 0, 5]]);
+    /// let b = Mat::<2, 2, i32>::new([[-7, 9], [8, 10]]);
+    ///
+    /// let c = a * b;
+    ///
+    /// assert_eq!(c, Mat::new([[-25, -21, 73], [-12, 24, 18]]));
+    /// ```
+    fn mul(self, rhs: Mat<COLS, OTHER_COLS, T>) -> Self::Output {
+        self.dot(&rhs)
+    }
+}
+
+impl<T, const ROWS: usize, const COLS: usize> std::ops::Index<(usize, usize)>
+    for Mat<ROWS, COLS, T>
+{
+    type Output = T;
+
+    /// Indexing into the matrix.
+    ///
+    /// # Examples
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
+    ///
+    /// assert_eq!(a[(0, 0)], 1.0);
+    /// assert_eq!(a[(1, 0)], 3.0);
+    /// assert_eq!(a[(0, 1)], 2.0);
+    /// assert_eq!(a[(1, 1)], 4.0);
+    /// ```
+    fn index(&self, (row, col): (usize, usize)) -> &Self::Output {
+        &self.data[row][col]
+    }
+}
+
+impl<T, const SIZE: usize> std::ops::Index<usize> for Mat<SIZE, 1, T> {
+    type Output = T;
+
+    /// Indexing into the vector.
+    /// 
+    /// # Examples
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::new([[1.0, 2.0, 3.0]]);
+    ///
+    /// assert_eq!(a[0], 1.0);
+    /// assert_eq!(a[1], 2.0);
+    /// assert_eq!(a[2], 3.0);
+    /// ```
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.data[0][index]
     }
 }

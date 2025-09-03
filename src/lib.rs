@@ -96,5 +96,6 @@ where
 
 mod base;
 mod ops;
+mod math;
 
 pub use base::*;
