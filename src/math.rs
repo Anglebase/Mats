@@ -48,3 +48,9 @@ where
         result
     }
 }
+
+// impl<T> crate::types::Vec3<T> {
+//     pub fn cross(&self, other: &crate::types::Vec3<T>) -> crate::types::Vec3<T> {
+
+//     }
+// }
