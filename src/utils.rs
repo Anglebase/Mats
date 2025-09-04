@@ -4,7 +4,7 @@ use crate::Float;
 ///
 /// # Example
 /// ```
-/// use mats::graphics::radian;
+/// use mats::radian;
 ///
 /// let a = radian(45.0);
 /// assert_eq!(a, std::f32::consts::PI / 4.0);
@@ -18,7 +18,7 @@ pub fn radian<T: Float>(angle: T) -> T {
 ///
 /// # Example
 /// ```
-/// use mats::graphics::degree;
+/// use mats::degree;
 ///
 /// let a = degree(std::f32::consts::PI / 4.0);
 /// assert_eq!(a, 45.0);
