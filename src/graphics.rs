@@ -442,16 +442,18 @@ pub fn orthographic<T: Float>(
     z_far: T,
 ) -> Mat4<T> {
     let two = T::unit_one() + T::unit_one();
-    let rl = T::unit_one() / (right - left);
-    let tb = T::unit_one() / (top - bottom);
-    let nf = T::unit_one() / (z_near - z_far);
 
     Mat {
         data: [
-            [two * rl, T::zero(), T::zero(), -rl * (right + left)],
-            [T::zero(), two * tb, T::zero(), -tb * (top + bottom)],
-            [T::zero(), T::zero(), two * nf, -nf * (z_near + z_far)],
-            [T::zero(), T::zero(), T::zero(), T::unit_one()],
+            [two / (right - left), T::zero(), T::zero(), T::zero()],
+            [T::zero(), two / (top - bottom), T::zero(), T::zero()],
+            [T::zero(), T::zero(), two / (z_near - z_far), T::zero()],
+            [
+                (right + left) / (left - right),
+                (top + bottom) / (bottom - top),
+                (z_near + z_far) / (z_near - z_far),
+                T::unit_one(),
+            ],
         ],
     }
 }
