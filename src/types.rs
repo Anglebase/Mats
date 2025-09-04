@@ -119,30 +119,6 @@ impl<T: Copy> From<(T, T, T, T)> for Vec4<T> {
     }
 }
 
-/// [T;2] -> Vec2
-impl<T: Copy> From<[T; 2]> for Vec2<T> {
-    #[inline]
-    fn from(value: [T; 2]) -> Self {
-        Vec2::new([[value[0], value[1]]])
-    }
-}
-
-/// [T;3] -> Vec3
-impl<T: Copy> From<[T; 3]> for Vec3<T> {
-    #[inline]
-    fn from(value: [T; 3]) -> Self {
-        Vec3::new([[value[0], value[1], value[2]]])
-    }
-}
-
-/// [T;4] -> Vec4
-impl<T: Copy> From<[T; 4]> for Vec4<T> {
-    #[inline]
-    fn from(value: [T; 4]) -> Self {
-        Vec4::new([[value[0], value[1], value[2], value[3]]])
-    }
-}
-
 /// If the `uniforms` feature is enabled, this module provides implementations of the `AsUniformValue`
 /// trait for the types defined in this module.
 ///

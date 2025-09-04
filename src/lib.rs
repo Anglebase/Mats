@@ -45,7 +45,7 @@ where
     /// use mats::Mat;
     ///
     /// let m = Mat::<2, 2>::init(0.0);
-    /// 
+    ///
     /// assert_eq!(m.raw_data(), &[[0.0, 0.0], [0.0, 0.0]]);
     /// ```
     #[inline]
@@ -82,13 +82,13 @@ where
     T: Default + Copy,
 {
     /// Create a new matrix with all elements initialized to the default value of `T`.
-    /// 
+    ///
     /// # Example
     /// ```
     /// use mats::Mat;
     ///
     /// let m = Mat::<2, 2, f32>::default();
-    /// 
+    ///
     /// assert_eq!(m.raw_data(), &[[f32::default(), f32::default()], [f32::default(), f32::default()]]);
     /// ```
     #[inline]
@@ -99,11 +99,45 @@ where
     }
 }
 
+impl<T, const ROWS: usize, const COLS: usize> From<[[T; ROWS]; COLS]> for Mat<ROWS, COLS, T> {
+    /// Convert a 2D array into a matrix.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let arr = [[1.0, 2.0], [3.0, 4.0]];
+    /// let m: Mat<2, 2, f32> = arr.into();
+    ///
+    /// assert_eq!(m.raw_data(), &arr);
+    /// ```
+    fn from(value: [[T; ROWS]; COLS]) -> Self {
+        Self { data: value }
+    }
+}
+
+impl<T, const SIZE: usize> From<[T; SIZE]> for Mat<SIZE, 1, T> {
+    /// Convert a 1D array into a column vector.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let arr = [1.0, 2.0, 3.0, 4.0];
+    /// let m: Mat<4, 1, f32> = arr.into();
+    ///
+    /// assert_eq!(m.raw_data(), &[[1.0, 2.0, 3.0, 4.0]]);
+    /// ```
+    fn from(value: [T; SIZE]) -> Self {
+        Self { data: [value] }
+    }
+}
+
 mod base;
-mod ops;
-mod math;
-mod types;
 pub mod graphics;
+mod math;
+mod ops;
+mod types;
 
 pub use base::*;
 pub use types::*;
