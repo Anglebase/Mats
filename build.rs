@@ -124,7 +124,6 @@ fn gen_crate_io_readme() {
 }
 
 fn main() {
-    // 获取 OUT_DIR 的路径
     let out_dir = env::var("OUT_DIR").unwrap();
     let dest_path = Path::new(&out_dir).join("generated.rs");
 
