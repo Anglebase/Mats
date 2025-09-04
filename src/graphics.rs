@@ -25,57 +25,39 @@ pub trait Float:
     fn tan(self) -> Self;
 }
 
-impl Float for f32 {
-    const PI: Self = std::f32::consts::PI;
-    const STRAIGHT: Self = 180.0f32;
-    const EPSILON: Self = std::f32::EPSILON;
+macro_rules! impl_float {
+    ($($t:tt),*) => {
+        $(
+            impl Float for $t {
+                const PI: Self = std::$t::consts::PI;
+                const STRAIGHT: Self = 180.0 as _;
+                const EPSILON: Self = std::$t::EPSILON;
 
-    fn cos(self) -> Self {
-        self.cos()
-    }
+                fn cos(self) -> Self {
+                    self.cos()
+                }
 
-    fn sin(self) -> Self {
-        self.sin()
-    }
+                fn sin(self) -> Self {
+                    self.sin()
+                }
 
-    fn sqrt(self) -> Self {
-        self.sqrt()
-    }
+                fn sqrt(self) -> Self {
+                    self.sqrt()
+                }
 
-    fn abs(self) -> Self {
-        self.abs()
-    }
+                fn abs(self) -> Self {
+                    self.abs()
+                }
 
-    fn tan(self) -> Self {
-        self.tan()
-    }
+                fn tan(self) -> Self {
+                    self.tan()
+                }
+            }
+        )*
+    };
 }
 
-impl Float for f64 {
-    const PI: Self = std::f64::consts::PI;
-    const STRAIGHT: Self = 180.0f64;
-    const EPSILON: Self = std::f64::EPSILON;
-
-    fn cos(self) -> Self {
-        self.cos()
-    }
-
-    fn sin(self) -> Self {
-        self.sin()
-    }
-
-    fn sqrt(self) -> Self {
-        self.sqrt()
-    }
-
-    fn abs(self) -> Self {
-        self.abs()
-    }
-
-    fn tan(self) -> Self {
-        self.tan()
-    }
-}
+impl_float!(f32, f64);
 
 /// Convert an angle in degrees to radians.
 ///
