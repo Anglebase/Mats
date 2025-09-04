@@ -202,7 +202,7 @@ impl<T, const SIZE: usize> std::ops::Index<usize> for Mat<SIZE, 1, T> {
     type Output = T;
 
     /// Indexing into the vector.
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use mats::Mat;
@@ -216,5 +216,105 @@ impl<T, const SIZE: usize> std::ops::Index<usize> for Mat<SIZE, 1, T> {
     #[inline]
     fn index(&self, index: usize) -> &Self::Output {
         &self.data[0][index]
+    }
+}
+
+impl<T, const ROWS: usize, const COLS: usize> std::ops::AddAssign for Mat<ROWS, COLS, T>
+where
+    T: Copy + std::ops::AddAssign,
+{
+    /// Computes the addition of two matrices and assigns the result to left operand.
+    /// 
+    /// # Examples
+    /// ```
+    /// use mats::Mat;
+    /// 
+    /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
+    /// let b = Mat::new([[5.0, 6.0], [7.0, 8.0]]);
+    /// a += b;
+    /// 
+    /// assert_eq!(a, Mat::new([[6.0, 8.0], [10.0, 12.0]]));
+    /// ```
+    fn add_assign(&mut self, rhs: Self) {
+        for i in 0..COLS {
+            for j in 0..ROWS {
+                self.data[i][j] += rhs.data[i][j];
+            }
+        }
+    }
+}
+
+impl<T, const ROWS: usize, const COLS: usize> std::ops::SubAssign for Mat<ROWS, COLS, T>
+where
+    T: Copy + std::ops::SubAssign,
+{
+    /// Computes the subtraction of two matrices and assigns the result to left operand.
+    /// 
+    /// # Examples
+    /// ```
+    /// use mats::Mat;
+    /// 
+    /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
+    /// let b = Mat::new([[5.0, 6.0], [7.0, 8.0]]);
+    /// a -= b;
+    /// 
+    /// assert_eq!(a, Mat::new([[-4.0, -4.0], [-4.0, -4.0]]));
+    /// ```
+    fn sub_assign(&mut self, rhs: Self) {
+        for i in 0..COLS {
+            for j in 0..ROWS {
+                self.data[i][j] -= rhs.data[i][j];
+            }
+        }
+    }
+}
+
+impl<T, const ROWS: usize, const COLS: usize> std::ops::MulAssign<T> for Mat<ROWS, COLS, T>
+where
+    T: Copy + std::ops::MulAssign,
+{
+    /// Computes the multiplication of a matrix by a scalar and assigns the result to left operand.
+    /// 
+    /// # Examples
+    /// ```
+    /// use mats::Mat;
+    /// 
+    /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
+    /// let b = 2.0;
+    /// a *= b;
+    /// 
+    /// assert_eq!(a, Mat::new([[2.0, 4.0], [6.0, 8.0]]));
+    /// ```
+    fn mul_assign(&mut self, rhs: T) {
+        for i in 0..COLS {
+            for j in 0..ROWS {
+                self.data[i][j] *= rhs;
+            }
+        }
+    }
+}
+
+impl<T, const ROWS: usize, const COLS: usize> std::ops::DivAssign<T> for Mat<ROWS, COLS, T>
+where
+    T: Copy + std::ops::DivAssign,
+{
+    /// Computes the division of a matrix by a scalar and assigns the result to left operand.
+    /// 
+    /// # Examples
+    /// ```
+    /// use mats::Mat;
+    /// 
+    /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
+    /// let b = 2.0;
+    /// a /= b;
+    /// 
+    /// assert_eq!(a, Mat::new([[0.5, 1.0], [1.5, 2.0]]));
+    /// ```
+    fn div_assign(&mut self, rhs: T) {
+        for i in 0..COLS {
+            for j in 0..ROWS {
+                self.data[i][j] /= rhs;
+            }
+        }
     }
 }

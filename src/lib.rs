@@ -14,7 +14,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mat<ROWS, COLS, T> {
     /// let m = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
     /// ```
     #[inline]
-    pub fn new(data: [[T; ROWS]; COLS]) -> Self {
+    pub const fn new(data: [[T; ROWS]; COLS]) -> Self {
         Self { data }
     }
 
@@ -29,7 +29,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mat<ROWS, COLS, T> {
     /// assert_eq!(data, &[[1.0, 2.0], [3.0, 4.0]]);
     /// ```
     #[inline]
-    pub fn raw_data(&self) -> &[[T; ROWS]; COLS] {
+    pub const fn raw_data(&self) -> &[[T; ROWS]; COLS] {
         &self.data
     }
 }
@@ -49,7 +49,7 @@ where
     /// assert_eq!(m.raw_data(), &[[0.0, 0.0], [0.0, 0.0]]);
     /// ```
     #[inline]
-    pub fn init(value: T) -> Self {
+    pub const fn init(value: T) -> Self {
         Self {
             data: [[value; ROWS]; COLS],
         }
@@ -103,6 +103,8 @@ mod base;
 mod ops;
 mod math;
 mod types;
+mod graphics;
 
 pub use base::*;
 pub use types::*;
+pub use graphics::*;
