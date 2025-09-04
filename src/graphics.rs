@@ -486,7 +486,7 @@ pub fn look_at<T: Float>(eye: Vec3<T>, center: Vec3<T>, up: Vec3<T>) -> Mat4<T> 
 ///
 /// assert_eq!(v2.x(), 9.0 / 16.0);
 /// assert_eq!(v2.y(), 0.0);
-/// assert_eq!(v2.z(), 200.0 / 999.0);
+/// assert_eq!(v2.z(), -200.0 / 999.0);
 /// ```
 pub fn perspective<T: Float>(fov: T, aspect: T, z_near: T, z_far: T) -> Mat4<T> {
     let two = T::unit_one() + T::unit_one();

@@ -224,15 +224,15 @@ where
     T: Copy + std::ops::AddAssign,
 {
     /// Computes the addition of two matrices and assigns the result to left operand.
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use mats::Mat;
-    /// 
+    ///
     /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
     /// let b = Mat::new([[5.0, 6.0], [7.0, 8.0]]);
     /// a += b;
-    /// 
+    ///
     /// assert_eq!(a, Mat::new([[6.0, 8.0], [10.0, 12.0]]));
     /// ```
     fn add_assign(&mut self, rhs: Self) {
@@ -249,15 +249,15 @@ where
     T: Copy + std::ops::SubAssign,
 {
     /// Computes the subtraction of two matrices and assigns the result to left operand.
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use mats::Mat;
-    /// 
+    ///
     /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
     /// let b = Mat::new([[5.0, 6.0], [7.0, 8.0]]);
     /// a -= b;
-    /// 
+    ///
     /// assert_eq!(a, Mat::new([[-4.0, -4.0], [-4.0, -4.0]]));
     /// ```
     fn sub_assign(&mut self, rhs: Self) {
@@ -274,15 +274,15 @@ where
     T: Copy + std::ops::MulAssign,
 {
     /// Computes the multiplication of a matrix by a scalar and assigns the result to left operand.
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use mats::Mat;
-    /// 
+    ///
     /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
     /// let b = 2.0;
     /// a *= b;
-    /// 
+    ///
     /// assert_eq!(a, Mat::new([[2.0, 4.0], [6.0, 8.0]]));
     /// ```
     fn mul_assign(&mut self, rhs: T) {
@@ -299,15 +299,15 @@ where
     T: Copy + std::ops::DivAssign,
 {
     /// Computes the division of a matrix by a scalar and assigns the result to left operand.
-    /// 
+    ///
     /// # Examples
     /// ```
     /// use mats::Mat;
-    /// 
+    ///
     /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
     /// let b = 2.0;
     /// a /= b;
-    /// 
+    ///
     /// assert_eq!(a, Mat::new([[0.5, 1.0], [1.5, 2.0]]));
     /// ```
     fn div_assign(&mut self, rhs: T) {
