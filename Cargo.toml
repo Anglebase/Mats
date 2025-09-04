@@ -27,3 +27,6 @@ required-features = ["graphics"]
 [[example]]
 name = "orthographic"
 required-features = ["graphics"]
+
+[package.metadata.docs.rs]
+all-features = true
