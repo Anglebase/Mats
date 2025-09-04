@@ -61,7 +61,7 @@ fn gen_code(path: &PathBuf) {
                 writeln!(file, "    ///").unwrap();
                 writeln!(file, "    /// # Example").unwrap();
                 writeln!(file, "    /// ```").unwrap();
-                writeln!(file, "    /// use mats::types::*;").unwrap();
+                writeln!(file, "    /// use mats::*;").unwrap();
                 writeln!(file, "    ///").unwrap();
                 let args = (0..i)
                     .into_iter()

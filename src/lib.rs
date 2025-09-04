@@ -102,6 +102,7 @@ where
 mod base;
 mod ops;
 mod math;
-pub mod types;
+mod types;
 
 pub use base::*;
+pub use types::*;

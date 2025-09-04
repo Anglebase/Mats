@@ -49,7 +49,7 @@ where
     ///
     /// # Example
     /// ```
-    /// use mats::types::Vec3;
+    /// use mats::Vec3;
     ///
     /// let a = Vec3::new([[1, 2, 3]]);
     /// let b = Vec3::new([[4, 5, 6]]);
