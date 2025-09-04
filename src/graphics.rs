@@ -322,37 +322,50 @@ pub fn rotate3d_z<T: Float>(angle: T) -> Mat4<T> {
 /// assert!(ais.z().abs() <= f32::EPSILON);
 /// ```
 #[inline]
-pub fn rotate3d<T: Float>(mut axis: Vec3<T>, angle: T) -> Mat4<T> {
-    let xx = axis.x() * axis.x();
-    let yy = axis.y() * axis.y();
-    let zz = axis.z() * axis.z();
-    // Normalize the axis vector.
-    let m = xx + yy + zz;
-    if (m - T::unit_one()).abs() > T::EPSILON {
-        axis /= m.sqrt();
-    }
-    // values
-    let c = angle.cos();
-    let s = angle.sin();
-    let c1 = T::unit_one() - c;
-    let xyc1 = axis.x() * axis.y() * c1;
-    let yzc1 = axis.y() * axis.z() * c1;
-    let xzc1 = axis.x() * axis.z() * c1;
-    let xs = axis.x() * s;
-    let ys = axis.y() * s;
-    let zs = axis.z() * s;
-    let xxc1 = xx * c1;
-    let yyc1 = yy * c1;
-    let zzc1 = zz * c1;
-    // result
-    Mat {
-        data: [
-            [c + xxc1, xyc1 + zs, xzc1 - ys, T::zero()],
-            [xyc1 - zs, c + yyc1, yzc1 + xs, T::zero()],
-            [xzc1 + ys, yzc1 - xs, c + zzc1, T::zero()],
-            [T::zero(), T::zero(), T::zero(), T::unit_one()],
-        ],
-    }
+pub fn rotate3d<T: Float>(axis: Vec3<T>, angle: T) -> Mat4<T> {
+    // Diary: Fix this function's BUG.
+    //
+    // For performance reasons, I try to minimize multiplication
+    // calculations as much as possible. But during testing,
+    // cubes always produce some inexplicable terrain changes.
+    // I have checked the formula several times and have not
+    // found any errors. When I had no choice, I threw it to AI.
+    // AI told me that I used the value before normalization.
+    //
+    // AI is really powerful.
+
+    // let xx = axis.x() * axis.x();
+    // let yy = axis.y() * axis.y();
+    // let zz = axis.z() * axis.z();
+    // // Normalize the axis vector.
+    // let m = xx + yy + zz;
+    // axis /= m.sqrt();
+    // // values
+    // let c = angle.cos();
+    // let s = angle.sin();
+    // let c1 = T::unit_one() - c;
+    // let xyc1 = axis.x() * axis.y() * c1;
+    // let yzc1 = axis.y() * axis.z() * c1;
+    // let xzc1 = axis.x() * axis.z() * c1;
+    // let xs = axis.x() * s;
+    // let ys = axis.y() * s;
+    // let zs = axis.z() * s;
+    // let xxc1 = xx * c1;
+    // let yyc1 = yy * c1;
+    // let zzc1 = zz * c1;
+    // // result
+    // Mat {
+    //     data: [
+    //         [c + xxc1, xyc1 + zs, xzc1 - ys, T::zero()],
+    //         [xyc1 - zs, c + yyc1, yzc1 + xs, T::zero()],
+    //         [xzc1 + ys, yzc1 - xs, c + zzc1, T::zero()],
+    //         [T::zero(), T::zero(), T::zero(), T::unit_one()],
+    //     ],
+    // }
+
+    // So now it's implemented like this.
+    let axis = axis / axis.T().dot(&axis)[0].sqrt();
+    unsafe { rotate3d_no_norm(axis, angle) }
 }
 
 /// Create a 3D rotation matrix around `axis` without normalizing it.
@@ -487,7 +500,7 @@ pub fn perspective<T: Float>(fov: T, aspect: T, z_near: T, z_far: T) -> Mat4<T> 
             [f / aspect, T::zero(), T::zero(), T::zero()],
             [T::zero(), f, T::zero(), T::zero()],
             [T::zero(), T::zero(), m, -T::unit_one()],
-            [T::zero(), T::zero(), -n, T::zero()],
+            [T::zero(), T::zero(), n, T::zero()],
         ],
     }
 }
