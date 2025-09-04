@@ -68,6 +68,7 @@ impl<T: Zero, const SIZE: usize> Zero for Mat<SIZE, SIZE, T> {
     ///
     /// assert_eq!(mat.raw_data(), &[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]);
     /// ```
+    #[inline]
     fn zero() -> Self {
         Self {
             data: [[T::zero(); SIZE]; SIZE],
@@ -89,6 +90,7 @@ where
     ///
     /// assert_eq!(mat.raw_data(), &[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
     /// ```
+    #[inline]
     fn unit_one() -> Self {
         let mut mat = Self::zero();
         for i in 0..SIZE {
@@ -112,6 +114,7 @@ where
     ///
     /// assert_eq!(mat.raw_data(), &[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
     /// ```
+    #[inline]
     pub fn new_identity() -> Self {
         Self::unit_one()
     }
@@ -129,6 +132,7 @@ where
     /// assert_eq!(mat.raw_data(), &[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]);
     /// ```
     #[allow(non_snake_case)]
+    #[inline]
     pub fn I() -> Self {
         Self::unit_one()
     }

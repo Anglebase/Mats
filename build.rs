@@ -85,6 +85,7 @@ fn gen_code(path: &PathBuf) {
                 };
                 writeln!(file, "    /// assert_eq!({}, {});", left, right).unwrap();
                 writeln!(file, "    /// ```").unwrap();
+                writeln!(file, "    #[inline]").unwrap();
                 writeln!(file, "    pub fn {}(&self) -> {} {{", ls.join(""), res_type).unwrap();
                 if ls.len() > 1 {
                     writeln!(file, "        Vec{}::new([[", ls.len()).unwrap();

@@ -13,6 +13,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mat<ROWS, COLS, T> {
     ///
     /// let m = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
     /// ```
+    #[inline]
     pub fn new(data: [[T; ROWS]; COLS]) -> Self {
         Self { data }
     }
@@ -27,6 +28,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mat<ROWS, COLS, T> {
     /// let data = m.raw_data();
     /// assert_eq!(data, &[[1.0, 2.0], [3.0, 4.0]]);
     /// ```
+    #[inline]
     pub fn raw_data(&self) -> &[[T; ROWS]; COLS] {
         &self.data
     }
@@ -46,6 +48,7 @@ where
     /// 
     /// assert_eq!(m.raw_data(), &[[0.0, 0.0], [0.0, 0.0]]);
     /// ```
+    #[inline]
     pub fn init(value: T) -> Self {
         Self {
             data: [[value; ROWS]; COLS],
@@ -63,6 +66,7 @@ where
     ///
     /// assert_eq!(m.raw_data(), &[[1.0, 1.0], [1.0, 1.0]]);
     /// ```
+    #[inline]
     pub fn fill(&mut self, value: T) {
         for i in 0..COLS {
             for j in 0..ROWS {
@@ -87,6 +91,7 @@ where
     /// 
     /// assert_eq!(m.raw_data(), &[[f32::default(), f32::default()], [f32::default(), f32::default()]]);
     /// ```
+    #[inline]
     fn default() -> Self {
         Self {
             data: [[T::default(); ROWS]; COLS],

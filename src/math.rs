@@ -25,16 +25,6 @@ where
         &self,
         other: &Mat<COLS, OTHER_COLS, T>,
     ) -> Mat<ROWS, OTHER_COLS, T> {
-        self.__dot_common(other)
-
-        // TODO: Implement optimized dot product algorithm for different sizes of matrices.
-    }
-
-    // Universal matrix dot product algorithm.
-    fn __dot_common<const OTHER_COLS: usize>(
-        &self,
-        other: &Mat<COLS, OTHER_COLS, T>,
-    ) -> Mat<ROWS, OTHER_COLS, T> {
         let mut result = Mat {
             data: [[T::zero(); ROWS]; OTHER_COLS],
         };
@@ -56,16 +46,16 @@ where
     /// Computes the cross product of two vectors.
     ///
     /// The result is a new vector
-    /// 
+    ///
     /// # Example
     /// ```
     /// use mats::types::Vec3;
-    /// 
+    ///
     /// let a = Vec3::new([[1, 2, 3]]);
     /// let b = Vec3::new([[4, 5, 6]]);
-    /// 
+    ///
     /// let c = a.cross(&b);
-    /// 
+    ///
     /// assert_eq!(c, Vec3::new([[-3, 6, -3]]));
     /// ```
     pub fn cross(&self, other: &crate::types::Vec3<T>) -> crate::types::Vec3<T> {
@@ -74,5 +64,53 @@ where
             self.z() * other.x() - self.x() * other.z(),
             self.x() * other.y() - self.y() * other.x(),
         ]])
+    }
+}
+
+impl<T, const ROWS: usize, const COLS: usize> Mat<ROWS, COLS, T>
+where
+    T: Copy,
+{
+    /// Computes the transpose of the matrix.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::<3, 2, i32>::new([[1, 3, -4], [-2, 0, 5]]);
+    ///
+    /// let b = a.transpose();
+    ///
+    /// assert_eq!(b, Mat::new([[1, -2], [3, 0], [-4, 5]]));
+    /// ```
+    pub fn transpose(&self) -> Mat<COLS, ROWS, T> {
+        let mut result: Mat<COLS, ROWS, T> =
+            unsafe { std::mem::MaybeUninit::uninit().assume_init() };
+        for i in 0..ROWS {
+            for j in 0..COLS {
+                result.data[i][j] = self.data[j][i];
+            }
+        }
+        result
+    }
+
+    /// Computes the transpose of the matrix.
+    ///
+    /// This is a shorthand for `Mat::transpose()`.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::<3, 2, i32>::new([[1, 3, -4], [-2, 0, 5]]);
+    ///
+    /// let b = a.T();
+    ///
+    /// assert_eq!(b, Mat::new([[1, -2], [3, 0], [-4, 5]]));
+    /// ```
+    #[allow(non_snake_case)]
+    #[inline]
+    pub fn T(&self) -> Mat<COLS, ROWS, T> {
+        self.transpose()
     }
 }

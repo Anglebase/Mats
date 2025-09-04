@@ -18,6 +18,7 @@ where
     ///
     /// assert_eq!(c, Mat::new([[6.0, 8.0], [10.0, 12.0]]));
     /// ```
+    #[inline]
     fn add(mut self, rhs: Self) -> Self::Output {
         for i in 0..COLS {
             for j in 0..ROWS {
@@ -46,6 +47,7 @@ where
     ///
     /// assert_eq!(c, Mat::new([[-4.0, -4.0], [-4.0, -4.0]]));
     /// ```
+    #[inline]
     fn sub(mut self, rhs: Self) -> Self::Output {
         for i in 0..COLS {
             for j in 0..ROWS {
@@ -74,6 +76,7 @@ where
     ///
     /// assert_eq!(c, Mat::new([[2.0, 4.0], [6.0, 8.0]]));
     /// ```
+    #[inline]
     fn mul(mut self, rhs: T) -> Self::Output {
         for i in 0..COLS {
             for j in 0..ROWS {
@@ -102,6 +105,7 @@ where
     ///
     /// assert_eq!(c, Mat::new([[0.5, 1.0], [1.5, 2.0]]));
     /// ```
+    #[inline]
     fn div(mut self, rhs: T) -> Self::Output {
         for i in 0..COLS {
             for j in 0..ROWS {
@@ -129,6 +133,7 @@ where
     ///
     /// assert_eq!(b, Mat::new([[-1.0, -2.0], [-3.0, -4.0]]));
     /// ```
+    #[inline]
     fn neg(mut self) -> Self::Output {
         for i in 0..COLS {
             for j in 0..ROWS {
@@ -163,6 +168,7 @@ where
     ///
     /// assert_eq!(c, Mat::new([[-25, -21, 73], [-12, 24, 18]]));
     /// ```
+    #[inline]
     fn mul(self, rhs: Mat<COLS, OTHER_COLS, T>) -> Self::Output {
         self.dot(&rhs)
     }
@@ -186,6 +192,7 @@ impl<T, const ROWS: usize, const COLS: usize> std::ops::Index<(usize, usize)>
     /// assert_eq!(a[(0, 1)], 2.0);
     /// assert_eq!(a[(1, 1)], 4.0);
     /// ```
+    #[inline]
     fn index(&self, (row, col): (usize, usize)) -> &Self::Output {
         &self.data[row][col]
     }
@@ -206,6 +213,7 @@ impl<T, const SIZE: usize> std::ops::Index<usize> for Mat<SIZE, 1, T> {
     /// assert_eq!(a[1], 2.0);
     /// assert_eq!(a[2], 3.0);
     /// ```
+    #[inline]
     fn index(&self, index: usize) -> &Self::Output {
         &self.data[0][index]
     }
