@@ -114,3 +114,35 @@ where
         self.transpose()
     }
 }
+
+impl<T, const ROWS: usize, const COLS: usize> Mat<ROWS, COLS, T>
+where
+    T: Copy + std::ops::Mul<Output = T>,
+{
+    /// Computes the hadamard product of two matrices.
+    /// 
+    /// The result is a new matrix with `ROWS` rows and `COLS` columns, where
+    /// each element is the product of the corresponding elements in the two matrices.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let a = Mat::<3, 2, i32>::new([[1, 3, -4], [-2, 0, 5]]);
+    /// let b = Mat::<3, 2, i32>::new([[2, 4, 6], [8, 10, 12]]);
+    ///
+    /// let c = a.hadamard(&b);
+    ///
+    /// assert_eq!(c, Mat::new([[2, 12, -24], [-16, 0, 60]]));
+    /// ```
+    pub fn hadamard(&self, other: &Mat<ROWS, COLS, T>) -> Mat<ROWS, COLS, T> {
+        let mut result: Mat<ROWS, COLS, T> =
+            unsafe { std::mem::MaybeUninit::uninit().assume_init() };
+        for j in 0..ROWS {
+            for i in 0..COLS {
+                result.data[i][j] = self.data[i][j] * other.data[i][j];
+            }
+        }
+        result
+    }
+}
