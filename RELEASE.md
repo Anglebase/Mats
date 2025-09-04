@@ -17,6 +17,7 @@
     - Implement trait `AsUniformValue`(from crate `glium`) for specific matrix types.
 
 + Computer Graphics(with feature `graphics`):
+    + If feature `graphics` is enabled, the feature `uniforms` is also enabled automatically.
     - Coorinate transformations:
         - 2D/3D: Translation, rotation, scaling.
         - Projection: Orthographic, perspective.
