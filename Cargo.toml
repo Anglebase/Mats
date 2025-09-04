@@ -12,10 +12,18 @@ repository = "https://github.com/Anglebase/Mats.git"
 glium = { version = "0.36.0", optional = true }
 
 [features]
-default = ["graphics"]
+default = []
 uniforms = ["glium"]
 graphics = ["uniforms"]
 
 [dev-dependencies]
 image = "0.25.8"
 glium = "0.36.0"
+
+[[example]]
+name = "perspective"
+required-features = ["graphics"]
+
+[[example]]
+name = "orthographic"
+required-features = ["graphics"]
