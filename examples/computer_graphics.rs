@@ -1,78 +1,14 @@
 use std::time::SystemTime;
 
 use glium::{
-    Display, DrawParameters, Surface, Texture2d,
-    backend::glutin::SimpleWindowBuilder,
-    glutin::surface::WindowSurface,
-    implement_vertex,
-    texture::RawImage2d,
-    uniforms::Sampler,
-    winit::{
-        application::ApplicationHandler, event::WindowEvent, event_loop::EventLoopBuilder,
-        window::Window,
-    },
+    backend::glutin::SimpleWindowBuilder, glutin::surface::WindowSurface, implement_vertex, texture::RawImage2d, uniforms::Sampler, winit::{event_loop::EventLoopBuilder, window::Window}, Display, DrawParameters, Surface, Texture2d
 };
 use image::GenericImageView;
 use mats::{graphics::*, radian};
 
-pub trait Drawable {
-    fn draw(&mut self, window: &Window, display: &Display<WindowSurface>);
+use crate::opengl::{Drawable, MyWindow};
 
-    fn handle(
-        &mut self,
-        event_loop: &glium::winit::event_loop::ActiveEventLoop,
-        window_id: glium::winit::window::WindowId,
-        event: glium::winit::event::WindowEvent,
-    ) {
-        let _ = (event_loop, window_id, event);
-    }
-}
-
-pub struct MyWindow<T: Drawable> {
-    impl_: T,
-    window: Window,
-    display: Display<WindowSurface>,
-}
-
-impl<T: Drawable> MyWindow<T> {
-    pub fn new(impl_: T, window: Window, display: Display<WindowSurface>) -> Self {
-        Self {
-            impl_,
-            window,
-            display,
-        }
-    }
-
-    pub fn window(&self) -> &Window {
-        &self.window
-    }
-
-    pub fn display(&self) -> &Display<WindowSurface> {
-        &self.display
-    }
-}
-
-impl<T: Drawable> ApplicationHandler for MyWindow<T> {
-    fn resumed(&mut self, _event_loop: &glium::winit::event_loop::ActiveEventLoop) {}
-
-    fn window_event(
-        &mut self,
-        event_loop: &glium::winit::event_loop::ActiveEventLoop,
-        _window_id: glium::winit::window::WindowId,
-        event: glium::winit::event::WindowEvent,
-    ) {
-        if let WindowEvent::CloseRequested = event {
-            event_loop.exit();
-        }
-
-        if let WindowEvent::RedrawRequested = event {
-            self.impl_.draw(&self.window, &self.display);
-        }
-
-        self.impl_.handle(event_loop, _window_id, event);
-        self.window.request_redraw();
-    }
-}
+mod opengl;
 
 #[derive(Clone, Copy)]
 struct Vertex {
@@ -195,7 +131,7 @@ fn main() {
     let event_loop = EventLoopBuilder::<()>::default().build().unwrap();
 
     let (window, display) = SimpleWindowBuilder::new().build(&event_loop);
-    let image = image::ImageReader::open("examples/computer_graphics/res/wall.jpg")
+    let image = image::ImageReader::open("examples/res/wall.jpg")
         .unwrap()
         .decode()
         .unwrap();
