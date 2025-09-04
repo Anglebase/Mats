@@ -137,9 +137,11 @@ mod base;
 mod math;
 mod ops;
 mod types;
+mod traits;
 
-pub use base::*;
 pub use types::*;
+pub use traits::*;
 
+/// Module `graphics` provides a range of facilities or tools for computer graphics.
 #[cfg(feature = "graphics")]
 pub mod graphics;
