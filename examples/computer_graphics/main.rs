@@ -13,7 +13,7 @@ use glium::{
     },
 };
 use image::GenericImageView;
-use mats::graphics::*;
+use mats::{graphics::*, radian};
 
 pub trait Drawable {
     fn draw(&mut self, window: &Window, display: &Display<WindowSurface>);
