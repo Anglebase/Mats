@@ -136,11 +136,13 @@ impl<T, const SIZE: usize> From<[T; SIZE]> for Mat<SIZE, 1, T> {
 mod base;
 mod math;
 mod ops;
-mod types;
 mod traits;
+mod types;
+mod utils;
 
-pub use types::*;
 pub use traits::*;
+pub use types::*;
+pub use utils::*;
 
 /// Module `graphics` provides a range of facilities or tools for computer graphics.
 #[cfg(feature = "graphics")]
