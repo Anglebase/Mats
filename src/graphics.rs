@@ -81,7 +81,7 @@ impl Float for f64 {
 ///
 /// # Example
 /// ```
-/// use mats::radian;
+/// use mats::graphics::radian;
 ///
 /// let a = radian(45.0);
 /// assert_eq!(a, std::f32::consts::PI / 4.0);
@@ -95,7 +95,7 @@ pub fn radian<T: Float>(angle: T) -> T {
 ///
 /// # Example
 /// ```
-/// use mats::degree;
+/// use mats::graphics::degree;
 ///
 /// let a = degree(std::f32::consts::PI / 4.0);
 /// assert_eq!(a, 45.0);
@@ -109,7 +109,7 @@ pub fn degree<T: Float>(angle: T) -> T {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec3, Vec2, scale2d};
+/// use mats::{Vec3, Vec2, graphics::scale2d};
 ///
 /// let v = Vec3::new([[1.0, 2.0, 1.0]]);
 /// let scale = scale2d(Vec2::new([[2.0, 3.0]]));
@@ -133,7 +133,7 @@ pub fn scale2d<T: Float>(v: Vec2<T>) -> Mat3<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec3, Vec2, translate2d};
+/// use mats::{Vec3, Vec2, graphics::translate2d};
 ///
 /// let v = Vec3::new([[1.0, 2.0, 1.0]]);
 /// let translate = translate2d(Vec2::new([[2.0, 3.0]]));
@@ -157,7 +157,7 @@ pub fn translate2d<T: Float>(v: Vec2<T>) -> Mat3<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec3, rotate2d};
+/// use mats::{Vec3, graphics::rotate2d};
 ///
 /// let v = Vec3::new([[1.0, 0.0, 1.0]]);
 /// let rotate = rotate2d(std::f32::consts::PI / 2.0);
@@ -185,7 +185,7 @@ pub fn rotate2d<T: Float>(angle: T) -> Mat3<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, Vec3, translate3d};
+/// use mats::{Vec4, Vec3, graphics::translate3d};
 ///
 /// let v = Vec4::new([[1.0, 2.0, 3.0, 1.0]]);
 /// let translate = translate3d(Vec3::new([[2.0, 3.0, 4.0]]));
@@ -211,7 +211,7 @@ pub fn translate3d<T: Float>(v: Vec3<T>) -> Mat4<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, Vec3, scale3d};
+/// use mats::{Vec4, Vec3, graphics::scale3d};
 ///
 /// let v = Vec4::new([[1.0, 2.0, 3.0, 1.0]]);
 /// let scale = scale3d(Vec3::new([[2.0, 3.0, 4.0]]));
@@ -237,7 +237,7 @@ pub fn scale3d<T: Float>(v: Vec3<T>) -> Mat4<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, Vec3, rotate3d_x};
+/// use mats::{Vec4, Vec3, graphics::rotate3d_x};
 ///
 /// let v = Vec4::new([[0.0, 1.0, 0.0, 1.0]]);
 /// let rotate = rotate3d_x(std::f32::consts::PI / 2.0);
@@ -267,7 +267,7 @@ pub fn rotate3d_x<T: Float>(angle: T) -> Mat4<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, Vec3, rotate3d_y};
+/// use mats::{Vec4, Vec3, graphics::rotate3d_y};
 ///
 /// let v = Vec4::new([[1.0, 0.0, 0.0, 1.0]]);
 /// let rotate = rotate3d_y(std::f32::consts::PI / 2.0);
@@ -297,7 +297,7 @@ pub fn rotate3d_y<T: Float>(angle: T) -> Mat4<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, Vec3, rotate3d_z};
+/// use mats::{Vec4, Vec3, graphics::rotate3d_z};
 ///
 /// let v = Vec4::new([[1.0, 0.0, 0.0, 1.0]]);
 /// let rotate = rotate3d_z(std::f32::consts::PI / 2.0);
@@ -327,7 +327,7 @@ pub fn rotate3d_z<T: Float>(angle: T) -> Mat4<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, Vec3, rotate3d};
+/// use mats::{Vec4, Vec3, graphics::rotate3d};
 ///
 /// let v = Vec4::new([[1.0, 0.0, 0.0, 1.0]]);
 /// let rotate = rotate3d(Vec3::new([[0.0, 1.0, 0.0]]), std::f32::consts::PI / 2.0);
@@ -380,7 +380,7 @@ pub fn rotate3d<T: Float>(mut axis: Vec3<T>, angle: T) -> Mat4<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, Vec3, rotate3d_no_norm};
+/// use mats::{Vec4, Vec3, graphics::rotate3d_no_norm};
 ///
 /// let v = Vec4::new([[1.0, 0.0, 0.0, 1.0]]);
 /// let rotate = unsafe { rotate3d_no_norm(Vec3::new([[0.0, 1.0, 0.0]]), std::f32::consts::PI / 2.0) };
@@ -425,7 +425,7 @@ pub unsafe fn rotate3d_no_norm<T: Float>(axis: Vec3<T>, angle: T) -> Mat4<T> {
 ///
 /// # Example
 /// ```
-/// use mats::{Vec3, Vec4, look_at};
+/// use mats::{Vec3, Vec4, graphics::look_at};
 ///
 /// let eye = Vec3::new([[1.0, 0.0, 1.0]]);
 /// let center = Vec3::new([[0.0, 0.0, 1.0]]);
@@ -478,7 +478,7 @@ pub fn look_at<T: Float>(eye: Vec3<T>, center: Vec3<T>, up: Vec3<T>) -> Mat4<T> 
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, perspective};
+/// use mats::{Vec4, graphics::perspective};
 ///
 /// let fov = std::f32::consts::PI / 2.0;
 /// let aspect = 16.0 / 9.0;
@@ -491,7 +491,7 @@ pub fn look_at<T: Float>(eye: Vec3<T>, center: Vec3<T>, up: Vec3<T>) -> Mat4<T> 
 ///
 /// assert_eq!(v2.x(), 9.0 / 16.0);
 /// assert_eq!(v2.y(), 0.0);
-/// assert_eq!(v2.z(), - 200.0 / 999.0);
+/// assert_eq!(v2.z(), 200.0 / 999.0);
 /// ```
 pub fn perspective<T: Float>(fov: T, aspect: T, z_near: T, z_far: T) -> Mat4<T> {
     let two = T::unit_one() + T::unit_one();
@@ -514,7 +514,7 @@ pub fn perspective<T: Float>(fov: T, aspect: T, z_near: T, z_far: T) -> Mat4<T> 
 ///
 /// # Example
 /// ```
-/// use mats::{Vec4, orthographic};
+/// use mats::{Vec4, graphics::orthographic};
 ///
 /// let (left, top, right, bottom) = (-1.0, 1.0, 1.0, -1.0);
 /// let z_near = -10.0;

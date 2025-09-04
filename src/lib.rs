@@ -103,8 +103,7 @@ mod base;
 mod ops;
 mod math;
 mod types;
-mod graphics;
+pub mod graphics;
 
 pub use base::*;
 pub use types::*;
-pub use graphics::*;
