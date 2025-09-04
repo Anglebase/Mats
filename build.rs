@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::env;
 use std::fs::File;
-use std::io::Write;
+use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
 fn gen_order(
@@ -110,10 +110,27 @@ fn gen_code(path: &PathBuf) {
     }
 }
 
+fn gen_crate_io_readme() {
+    let mut readme = File::open("README.md").unwrap();
+    let mut release = File::open("RELEASE.md").unwrap();
+    let mut file = File::create("CRATE.md").unwrap();
+    let mut buff = Vec::new();
+    readme.read_to_end(&mut buff).unwrap();
+    file.write_all(&buff).unwrap();
+    write!(file, "\n\n-------\n\n").unwrap();
+    buff.clear();
+    release.read_to_end(&mut buff).unwrap();
+    file.write_all(&buff).unwrap();
+}
+
 fn main() {
     // 获取 OUT_DIR 的路径
     let out_dir = env::var("OUT_DIR").unwrap();
     let dest_path = Path::new(&out_dir).join("generated.rs");
 
+    println!("cargo:rerun-if-changed=README.md");
+    println!("cargo:rerun-if-changed=RELEASE.md");
+
     gen_code(&dest_path);
+    gen_crate_io_readme();
 }

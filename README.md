@@ -5,6 +5,7 @@
 ## Features
 
 + `uniforms`: If this feature is enabled, `Mats` will implement trait `AsUniformValue` for specific types of matrices, allowing them to interact with OpenGL.
++ `graphics`: If this feature is enabled, `Mats` will provide tools for computer graphics, such as coordinate transformation matrices.
 
 ## Example
 

@@ -134,10 +134,12 @@ impl<T, const SIZE: usize> From<[T; SIZE]> for Mat<SIZE, 1, T> {
 }
 
 mod base;
-pub mod graphics;
 mod math;
 mod ops;
 mod types;
 
 pub use base::*;
 pub use types::*;
+
+#[cfg(feature = "graphics")]
+pub mod graphics;
