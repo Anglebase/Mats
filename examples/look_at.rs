@@ -101,7 +101,7 @@ impl Drawable for Canvas {
             [0.0, 0.0, 0.0].into(),
             [0.0, 1.0, 0.0].into(),
         );
-        
+
         let pre = perspective(
             45.0,
             window.inner_size().width as f32 / window.inner_size().height as f32,

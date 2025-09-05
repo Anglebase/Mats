@@ -179,7 +179,7 @@ impl<T, const ROWS: usize, const COLS: usize> std::ops::Index<(usize, usize)>
 {
     type Output = T;
 
-    /// Indexing into the matrix.
+    /// Accessing members in the matrix by indexing.
     ///
     /// # Examples
     /// ```
@@ -188,20 +188,41 @@ impl<T, const ROWS: usize, const COLS: usize> std::ops::Index<(usize, usize)>
     /// let a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
     ///
     /// assert_eq!(a[(0, 0)], 1.0);
-    /// assert_eq!(a[(1, 0)], 3.0);
-    /// assert_eq!(a[(0, 1)], 2.0);
+    /// assert_eq!(a[(1, 0)], 2.0);
+    /// assert_eq!(a[(0, 1)], 3.0);
     /// assert_eq!(a[(1, 1)], 4.0);
     /// ```
-    #[inline]
+    #[inline(always)]
     fn index(&self, (row, col): (usize, usize)) -> &Self::Output {
-        &self.data[row][col]
+        &self.data[col][row]
+    }
+}
+
+impl<T, const ROWS: usize, const COLS: usize> std::ops::IndexMut<(usize, usize)>
+    for Mat<ROWS, COLS, T>
+{
+    /// Accessing members in the matrix by indexing.
+    ///
+    /// # Examples
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let mut a = Mat::new([[1.0, 2.0], [3.0, 4.0]]);
+    ///
+    /// a[(1, 0)] = 5.0;
+    ///
+    /// assert_eq!(a, Mat::new([[1.0, 5.0], [3.0, 4.0]]));
+    /// ```
+    #[inline(always)]
+    fn index_mut(&mut self, (row, col): (usize, usize)) -> &mut Self::Output {
+        &mut self.data[col][row]
     }
 }
 
 impl<T, const SIZE: usize> std::ops::Index<usize> for Mat<SIZE, 1, T> {
     type Output = T;
 
-    /// Indexing into the vector.
+    /// Accessing members in the vector by indexing.
     ///
     /// # Examples
     /// ```
@@ -213,9 +234,27 @@ impl<T, const SIZE: usize> std::ops::Index<usize> for Mat<SIZE, 1, T> {
     /// assert_eq!(a[1], 2.0);
     /// assert_eq!(a[2], 3.0);
     /// ```
-    #[inline]
+    #[inline(always)]
     fn index(&self, index: usize) -> &Self::Output {
         &self.data[0][index]
+    }
+}
+
+impl<T, const SIZE: usize> std::ops::IndexMut<usize> for Mat<SIZE, 1, T> {
+    /// Accessing members in the vector by indexing.
+    ///
+    /// # Examples
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let mut a = Mat::new([[1.0, 2.0, 3.0]]);
+    /// a[1] = 5.0;
+    ///
+    /// assert_eq!(a, Mat::new([[1.0, 5.0, 3.0]]));
+    /// ```
+    #[inline(always)]
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.data[0][index]
     }
 }
 

@@ -28,6 +28,13 @@ Licensed under either of MIT license or Apache License, Version 2.0 at your opti
 
 # Release Notes
 
+## Release v2.0.1
+
+### Fix
++ Add attribute `#[inline]` to a simple function.
++ Revise the implementation of trait `Index` for type `Mat`.
++ Supplement the implementation of trait `IndexMut` for type `Mat`.
+
 ## Release v2.0.0
 
 ### Features
