@@ -146,7 +146,7 @@ pub use utils::*;
 
 /// `#[cfg(feature = "graphics")]`: Module `graphics` provides a range
 /// of facilities or tools for computer graphics.
-/// 
+///
 /// When the `graphics` feature is enabled, this module will be available.
 #[cfg(feature = "graphics")]
 pub mod graphics;

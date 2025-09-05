@@ -16,7 +16,6 @@ where
     ///
     /// let a = Mat::<3, 2, i32>::new([[1, 3, -4], [-2, 0, 5]]);
     /// let b = Mat::<2, 2, i32>::new([[-7, 9], [8, 10]]);
-    ///
     /// let c = a.dot(&b);
     ///
     /// assert_eq!(c, Mat::new([[-25, -21, 73], [-12, 24, 18]]));
@@ -53,7 +52,6 @@ where
     ///
     /// let a = Vec3::new([[1, 2, 3]]);
     /// let b = Vec3::new([[4, 5, 6]]);
-    ///
     /// let c = a.cross(&b);
     ///
     /// assert_eq!(c, Vec3::new([[-3, 6, -3]]));
@@ -78,7 +76,6 @@ where
     /// use mats::Mat;
     ///
     /// let a = Mat::<3, 2, i32>::new([[1, 3, -4], [-2, 0, 5]]);
-    ///
     /// let b = a.transpose();
     ///
     /// assert_eq!(b, Mat::new([[1, -2], [3, 0], [-4, 5]]));
@@ -103,7 +100,6 @@ where
     /// use mats::Mat;
     ///
     /// let a = Mat::<3, 2, i32>::new([[1, 3, -4], [-2, 0, 5]]);
-    ///
     /// let b = a.T();
     ///
     /// assert_eq!(b, Mat::new([[1, -2], [3, 0], [-4, 5]]));

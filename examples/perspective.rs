@@ -1,7 +1,13 @@
 use std::time::SystemTime;
 
 use glium::{
-    backend::glutin::SimpleWindowBuilder, glutin::surface::WindowSurface, implement_vertex, texture::RawImage2d, uniforms::Sampler, winit::{event_loop::EventLoopBuilder, window::Window}, Display, DrawParameters, Surface, Texture2d
+    Display, DrawParameters, Surface, Texture2d,
+    backend::glutin::SimpleWindowBuilder,
+    glutin::surface::WindowSurface,
+    implement_vertex,
+    texture::RawImage2d,
+    uniforms::Sampler,
+    winit::{event_loop::EventLoopBuilder, window::Window},
 };
 use image::GenericImageView;
 use mats::{graphics::*, radian};
