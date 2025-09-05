@@ -144,6 +144,8 @@ pub use traits::*;
 pub use types::*;
 pub use utils::*;
 
+pub mod dynamic;
+
 /// `#[cfg(feature = "graphics")]`: Module `graphics` provides a range
 /// of facilities or tools for computer graphics.
 /// 
