@@ -120,7 +120,7 @@ where
     T: Copy + std::ops::Mul<Output = T>,
 {
     /// Computes the hadamard product of two matrices.
-    /// 
+    ///
     /// The result is a new matrix with `ROWS` rows and `COLS` columns, where
     /// each element is the product of the corresponding elements in the two matrices.
     ///

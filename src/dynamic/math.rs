@@ -50,7 +50,7 @@ where
     T: std::ops::AddAssign + std::ops::Mul<Output = T> + Zero,
 {
     /// Multiply two matrices.
-    /// 
+    ///
     /// # Errors
     /// If the number of columns of the first matrix is not equal
     /// to the number of rows of the second matrix.
