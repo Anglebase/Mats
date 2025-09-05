@@ -280,3 +280,334 @@ where
         result
     }
 }
+
+impl<T: Copy> Matrix<T>
+where
+    T: std::ops::Neg<Output = T>,
+{
+    /// Compute the negation of a matrix.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let result = matrix.neg();
+    /// assert_eq!(result, Matrix::new([[-1, -2, -3], [-4, -5, -6]]));
+    /// ```
+    pub fn neg(&self) -> Self {
+        let mut result = unsafe { Self::uninit(self.rows, self.cols) };
+        result
+            .data
+            .iter_mut()
+            .zip(self.data.iter())
+            .for_each(|(r, e)| *r = -*e);
+        result
+    }
+}
+
+impl<T: Copy> Matrix<T>
+where
+    T: std::ops::AddAssign,
+{
+    /// Compute the addition of two matrices and assign the result to the left-hand matrix.
+    ///
+    /// # Return
+    /// If the dimensions of two matrices do not match, it will return
+    /// a `MatrixError::DimensionsNotMatch` error.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let mut matrix1 = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let matrix2 = Matrix::new([[7, 8, 9], [10, 11, 12]]);
+    /// matrix1.add_assign(&matrix2).unwrap();
+    /// assert_eq!(matrix1, Matrix::new([[8, 10, 12], [14, 16, 18]]));
+    /// ```
+    pub fn add_assign(&mut self, other: &Self) -> super::Result<()> {
+        if self.size() != other.size() {
+            Err(MatrixError::DimensionsNotMatch {
+                expected: format!("{}x{}", self.rows, self.cols),
+                actual: format!("{}x{}", other.rows, other.cols),
+            })
+        } else {
+            self.data
+                .iter_mut()
+                .zip(other.data.iter())
+                .for_each(|(r, e)| *r += *e);
+            Ok(())
+        }
+    }
+}
+
+impl<T: Copy> Matrix<T>
+where
+    T: std::ops::SubAssign,
+{
+    /// Compute the subtraction of two matrices and assign the result to the left-hand matrix.
+    ///
+    /// # Return
+    /// If the dimensions of two matrices do not match, it will return
+    /// a `MatrixError::DimensionsNotMatch` error.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let mut matrix1 = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let matrix2 = Matrix::new([[7, 8, 9], [10, 11, 12]]);
+    /// matrix1.sub_assign(&matrix2).unwrap();
+    /// assert_eq!(matrix1, Matrix::new([[-6, -6, -6], [-6, -6, -6]]));
+    /// ```
+    pub fn sub_assign(&mut self, other: &Self) -> super::Result<()> {
+        if self.size() != other.size() {
+            Err(MatrixError::DimensionsNotMatch {
+                expected: format!("{}x{}", self.rows, self.cols),
+                actual: format!("{}x{}", other.rows, other.cols),
+            })
+        } else {
+            self.data
+                .iter_mut()
+                .zip(other.data.iter())
+                .for_each(|(r, e)| *r -= *e);
+            Ok(())
+        }
+    }
+}
+
+impl<T: Copy> Matrix<T>
+where
+    T: std::ops::MulAssign,
+{
+    /// Compute the multiplication of a matrix and a scalar and assign the result to the left-hand matrix.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let mut matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// matrix.mul_assign(2);
+    /// assert_eq!(matrix, Matrix::new([[2, 4, 6], [8, 10, 12]]));
+    /// ```
+    #[inline]
+    pub fn mul_assign(&mut self, other: T) {
+        self.data.iter_mut().for_each(|e| *e *= other);
+    }
+}
+
+impl<T: Copy> Matrix<T>
+where
+    T: std::ops::DivAssign,
+{
+    /// Compute the division of a matrix and a scalar and assign the result to the left-hand matrix.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let mut matrix = Matrix::new([[2, 4, 6], [8, 10, 12]]);
+    /// matrix.div_assign(2);
+    /// assert_eq!(matrix, Matrix::new([[1, 2, 3], [4, 5, 6]]));
+    /// ```
+    #[inline]
+    pub fn div_assign(&mut self, other: T) {
+        self.data.iter_mut().for_each(|e| *e /= other);
+    }
+}
+
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+
+impl<T: Copy + Add<Output = T>> Add for Matrix<T> {
+    type Output = Self;
+
+    /// Operator overloading for addition of two matrices.
+    /// 
+    /// # Panics
+    /// If the dimensions of two matrices do not match, it will panic.
+    /// 
+    /// # Note
+    /// This method is same as `Matrix::add` method. But it is more recommended
+    /// to use the latter. It will acquire ownership of the data.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let matrix1 = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let matrix2 = Matrix::new([[7, 8, 9], [10, 11, 12]]);
+    /// let result = matrix1 + matrix2;
+    /// assert_eq!(result, Matrix::new([[8, 10, 12], [14, 16, 18]]));
+    /// ```
+    fn add(self, other: Self) -> Self::Output {
+        (&self).add(&other).unwrap()
+    }
+}
+
+impl<T: Copy + AddAssign> AddAssign for Matrix<T> {
+    /// Operator overloading for addition of two matrices and assign the result to the left-hand matrix.
+    /// 
+    /// # Panics
+    /// If the dimensions of two matrices do not match, it will panic.
+    /// 
+    /// # Note
+    /// This method is same as `Matrix::add_assign` method. But it is more recommended
+    /// to use the latter. It will acquire ownership of the data.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let mut matrix1 = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let matrix2 = Matrix::new([[7, 8, 9], [10, 11, 12]]);
+    /// matrix1 += matrix2;
+    /// assert_eq!(matrix1, Matrix::new([[8, 10, 12], [14, 16, 18]]));
+    /// ```
+    fn add_assign(&mut self, other: Self) {
+        self.add_assign(&other).unwrap()
+    }
+}
+
+impl<T: Copy + Sub<Output = T>> Sub for Matrix<T> {
+    type Output = Self;
+    /// Operator overloading for subtraction of two matrices.
+    /// 
+    /// # Panics
+    /// If the dimensions of two matrices do not match, it will panic.
+    /// 
+    /// # Note
+    /// This method is same as `Matrix::sub` method. But it is more recommended
+    /// to use the latter. It will acquire ownership of the data.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let matrix1 = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let matrix2 = Matrix::new([[7, 8, 9], [10, 11, 12]]);
+    /// let result = matrix1 - matrix2;
+    /// assert_eq!(result, Matrix::new([[-6, -6, -6], [-6, -6, -6]]));
+    /// ```
+    fn sub(self, other: Self) -> Self::Output {
+        (&self).sub(&other).unwrap()
+    }
+}
+
+impl<T: Copy + SubAssign> SubAssign for Matrix<T> {
+    /// Operator overloading for subtraction of two matrices and assign the result to the left-hand matrix.
+    /// 
+    /// # Panics
+    /// If the dimensions of two matrices do not match, it will panic.
+    /// 
+    /// # Note
+    /// This method is same as `Matrix::sub_assign` method. But it is more recommended
+    /// to use the latter. It will acquire ownership of the data.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let mut matrix1 = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let matrix2 = Matrix::new([[7, 8, 9], [10, 11, 12]]);
+    /// matrix1 -= matrix2;
+    /// assert_eq!(matrix1, Matrix::new([[-6, -6, -6], [-6, -6, -6]]));
+    /// ```
+    fn sub_assign(&mut self, other: Self) {
+        self.sub_assign(&other).unwrap()
+    }
+}
+
+impl<T: Copy + Mul<Output = T>> Mul<T> for Matrix<T> {
+    type Output = Self;
+    /// Operator overloading for multiplication of a matrix and a scalar.
+    /// 
+    /// # Note
+    /// This method is same as `Matrix::mul` method. But it is more recommended
+    /// to use the latter. It will acquire ownership of the data.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let result = matrix * 2;
+    /// assert_eq!(result, Matrix::new([[2, 4, 6], [8, 10, 12]]));
+    /// ```
+    fn mul(self, other: T) -> Self::Output {
+        (&self).mul(other)
+    }
+}
+
+impl<T: Copy + MulAssign> MulAssign<T> for Matrix<T> {
+    /// Operator overloading for multiplication of a matrix and a scalar and assign the result to the left-hand matrix.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let mut matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// matrix *= 2;
+    /// assert_eq!(matrix, Matrix::new([[2, 4, 6], [8, 10, 12]]));
+    /// ```
+    fn mul_assign(&mut self, other: T) {
+        self.mul_assign(other)
+    }
+}
+
+impl<T: Copy + Div<Output = T>> Div<T> for Matrix<T> {
+    type Output = Self;
+    /// Operator overloading for division of a matrix and a scalar.
+    /// 
+    /// # Note
+    /// This method is same as `Matrix::div` method. But it is more recommended
+    /// to use the latter. It will acquire ownership of the data.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let matrix = Matrix::new([[2, 4, 6], [8, 10, 12]]);
+    /// let result = matrix / 2;
+    /// assert_eq!(result, Matrix::new([[1, 2, 3], [4, 5, 6]]));
+    /// ```
+    fn div(self, other: T) -> Self::Output {
+        (&self).div(other)
+    }
+}
+
+impl<T: Copy + DivAssign> DivAssign<T> for Matrix<T> {
+    /// Operator overloading for division of a matrix and a scalar and assign the result to the left-hand matrix.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let mut matrix = Matrix::new([[2, 4, 6], [8, 10, 12]]);
+    /// matrix /= 2;
+    /// assert_eq!(matrix, Matrix::new([[1, 2, 3], [4, 5, 6]]));
+    /// ```
+    fn div_assign(&mut self, other: T) {
+        self.div_assign(other)
+    }
+}
+
+impl<T: Copy + Neg<Output = T>> Neg for Matrix<T> {
+    type Output = Self;
+    /// Operator overloading for negation of a matrix.
+    /// 
+    /// # Note
+    /// This method is same as `Matrix::neg` method. But it is more recommended
+    /// to use the latter. It will acquire ownership of the data.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    /// 
+    /// let matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// let result = -matrix;
+    /// assert_eq!(result, Matrix::new([[-1, -2, -3], [-4, -5, -6]]));
+    /// ```
+    fn neg(self) -> Self::Output {
+        (&self).neg()
+    }
+}
