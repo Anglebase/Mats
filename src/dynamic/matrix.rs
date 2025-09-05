@@ -1,4 +1,4 @@
-use crate::{Mat, dynamic::MatrixError};
+use crate::{Mat, UnitOne, Zero, dynamic::MatrixError};
 
 /// A dynamic-size column-major matrix.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -435,7 +435,7 @@ impl<T> Matrix<T> {
     }
 
     /// Get the mutable reference of the element at the specified row and column.
-    /// 
+    ///
     /// # Example
     /// ```
     /// use mats::dynamic::Matrix;
@@ -452,5 +452,31 @@ impl<T> Matrix<T> {
         } else {
             None
         }
+    }
+}
+
+impl<T: Copy + UnitOne + Zero> Matrix<T> {
+    /// Create a new identity matrix with the specified dimensions.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let matrix = Matrix::new_identity(3, 3);
+    /// assert_eq!(matrix, Matrix::new([[1, 0, 0], [0, 1, 0], [0, 0, 1]]));
+    /// ```
+    #[inline]
+    pub fn new_identity(size: usize) -> Self {
+        let mut result = Self::fill(size, size, T::zero());
+        for i in 0..size {
+            result.data[size * i + i] = T::unit_one();
+        }
+        result
+    }
+
+    #[allow(non_snake_case)]
+    #[inline]
+    pub fn I(size: usize) -> Self {
+        Self::new_identity(size)
     }
 }
