@@ -146,3 +146,49 @@ where
         result
     }
 }
+
+impl<T: Copy, const SIZE: usize> Mat<SIZE, SIZE, T> {
+    /// In-place matrix transposition.
+    ///
+    /// Recommend using this method when you need to
+    /// transpose a large static size square matrix.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let mut a = Mat::<3, 3, i32>::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+    /// a.transpose_self();
+    ///
+    /// assert_eq!(a, Mat::new([[1, 4, 7], [2, 5, 8], [3, 6, 9]]));
+    /// ```
+    #[inline]
+    pub fn transpose_self(&mut self) {
+        for i in 0..SIZE {
+            for j in i + 1..SIZE {
+                let temp = self.data[i][j];
+                self.data[i][j] = self.data[j][i];
+                self.data[j][i] = temp;
+            }
+        }
+    }
+
+    /// In-place matrix transposition.
+    ///
+    /// This is a shorthand for `Mat::transpose_self()`.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::Mat;
+    ///
+    /// let mut a = Mat::<3, 3, i32>::new([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+    /// a.T_self();
+    ///
+    /// assert_eq!(a, Mat::new([[1, 4, 7], [2, 5, 8], [3, 6, 9]]));
+    /// ```
+    #[allow(non_snake_case)]
+    #[inline]
+    pub fn T_self(&mut self) {
+        self.transpose_self();
+    }
+}
