@@ -2,7 +2,7 @@ use crate::{Mat, dynamic::MatrixError};
 
 /// A dynamic-size column-major matrix.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Matrix<T> {
+pub struct Matrix<T = f32> {
     rows: usize,
     cols: usize,
     data: Vec<T>,
