@@ -18,6 +18,7 @@ macro_rules! impl_unit_one {
     ($($t:ty),*) => {
         $(
             impl UnitOne for $t {
+                #[inline(always)]
                 fn unit_one() -> Self {
                     1 as Self
                 }
@@ -45,6 +46,7 @@ macro_rules! impl_zero {
     ($($t:ty), *) => {
         $(
             impl Zero for $t {
+                #[inline(always)]
                 fn zero() -> Self {
                     0 as Self
                 }
@@ -133,22 +135,27 @@ macro_rules! impl_float {
                 const STRAIGHT: Self = 180.0 as _;
                 const EPSILON: Self = std::$t::EPSILON;
 
+                #[inline(always)]
                 fn cos(self) -> Self {
                     self.cos()
                 }
 
+                #[inline(always)]
                 fn sin(self) -> Self {
                     self.sin()
                 }
 
+                #[inline(always)]
                 fn sqrt(self) -> Self {
                     self.sqrt()
                 }
 
+                #[inline(always)]
                 fn abs(self) -> Self {
                     self.abs()
                 }
 
+                #[inline(always)]
                 fn tan(self) -> Self {
                     self.tan()
                 }
