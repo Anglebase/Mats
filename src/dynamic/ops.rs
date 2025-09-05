@@ -212,8 +212,9 @@ impl<T> Index<(usize, usize)> for Matrix<T> {
     /// assert_eq!(matrix[(0, 0)], 1);
     /// assert_eq!(matrix[(2, 1)], 6);
     /// ```
+    #[inline(always)]
     fn index(&self, (row, col): (usize, usize)) -> &Self::Output {
-        self.get(row, col).unwrap()
+        &self.data[self.rows * col + row]
     }
 }
 
@@ -232,7 +233,8 @@ impl<T> IndexMut<(usize, usize)> for Matrix<T> {
     /// matrix[(2, 1)] = 60;
     /// assert_eq!(matrix, Matrix::new([[10, 2, 3], [4, 5, 60]]));
     /// ```
+    #[inline(always)]
     fn index_mut(&mut self, (row, col): (usize, usize)) -> &mut Self::Output {
-        self.get_mut(row, col).unwrap()
+        &mut self.data[self.rows * col + row]
     }
 }

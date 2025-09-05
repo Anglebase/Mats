@@ -3,9 +3,9 @@ use crate::{Mat, UnitOne, Zero, dynamic::MatrixError};
 /// A dynamic-size column-major matrix.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Matrix<T = f32> {
-    rows: usize,
-    cols: usize,
-    data: Vec<T>,
+    pub(super) rows: usize,
+    pub(super) cols: usize,
+    pub(super) data: Vec<T>,
 }
 
 impl<T> Matrix<T> {
@@ -426,6 +426,7 @@ impl<T> Matrix<T> {
     /// let matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
     /// assert_eq!(matrix.get(2, 1), Some(&6));
     /// ```
+    #[inline]
     pub fn get(&self, row: usize, col: usize) -> Option<&T> {
         if row < self.rows || col < self.cols {
             Some(&self.data[self.rows * col + row])
@@ -446,6 +447,7 @@ impl<T> Matrix<T> {
     /// }
     /// assert_eq!(matrix, Matrix::new([[1, 2, 3], [4, 5, 10]]));
     /// ```
+    #[inline]
     pub fn get_mut(&mut self, row: usize, col: usize) -> Option<&mut T> {
         if row < self.rows || col < self.cols {
             Some(&mut self.data[self.rows * col + row])
