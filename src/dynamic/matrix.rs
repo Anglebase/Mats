@@ -132,7 +132,7 @@ impl<T, const ROWS: usize, const COLS: usize> TryInto<Mat<ROWS, COLS, T>> for Ma
 
     /// Try to convert a dynamic-size matrix `Matrix` to a static-size matrix `Mat`.
     ///
-    /// # Return
+    /// # Errors
     /// If the dimensions of two matrices do not match, it will return
     /// a `MatrixError::DimensionsNotMatch` error.
     ///
@@ -170,7 +170,7 @@ where
 {
     /// Compute the addition of two matrices.
     ///
-    /// # Return
+    /// # Errors
     /// If the dimensions of two matrices do not match, it will return
     /// a `MatrixError::DimensionsNotMatch` error.
     ///
@@ -207,7 +207,7 @@ where
 {
     /// Compute the subtraction of two matrices.
     ///
-    /// # Return
+    /// # Errors
     /// If the dimensions of two matrices do not match, it will return
     /// a `MatrixError::DimensionsNotMatch` error.
     ///
@@ -319,7 +319,7 @@ where
 {
     /// Compute the addition of two matrices and assign the result to the left-hand matrix.
     ///
-    /// # Return
+    /// # Errors
     /// If the dimensions of two matrices do not match, it will return
     /// a `MatrixError::DimensionsNotMatch` error.
     ///
@@ -354,7 +354,7 @@ where
 {
     /// Compute the subtraction of two matrices and assign the result to the left-hand matrix.
     ///
-    /// # Return
+    /// # Errors
     /// If the dimensions of two matrices do not match, it will return
     /// a `MatrixError::DimensionsNotMatch` error.
     ///
