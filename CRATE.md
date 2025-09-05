@@ -28,6 +28,15 @@ Licensed under either of MIT license or Apache License, Version 2.0 at your opti
 
 # Release Notes
 
+## Release v2.1.0
+
+### Features
++ Math(type `Mat`):
+    + Hadamard product of matrices.
+    + In-place transpose of matrices.
+
++ **New**: Dynamic-Size Matrix(type `dynamic::Matrix`):
+
 ## Release v2.0.0
 
 ### Features

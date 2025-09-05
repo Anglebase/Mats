@@ -1,5 +1,14 @@
 # Release Notes
 
+## Release v2.1.0
+
+### Features
++ Math(type `Mat`):
+    + Hadamard product of matrices.
+    + In-place transpose of matrices.
+
++ **New**: Dynamic-Size Matrix(type `dynamic::Matrix`):
+
 ## Release v2.0.0
 
 ### Features
