@@ -260,6 +260,16 @@ impl<T: Copy> Matrix<T>
 where
     T: std::ops::Div<Output = T>,
 {
+    /// Compute the multiplication of a matrix and a scalar.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let matrix = Matrix::new([[2, 4, 6], [8, 10, 12]]);
+    /// let result = matrix.div(2);
+    /// assert_eq!(result, Matrix::new([[1, 2, 3], [4, 5, 6]]));
+    /// ```
     pub fn div(&self, other: T) -> Self {
         let mut result = unsafe { Self::uninit(self.rows, self.cols) };
         result
