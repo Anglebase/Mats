@@ -415,3 +415,42 @@ where
         self.data.iter_mut().for_each(|e| *e /= other);
     }
 }
+
+impl<T> Matrix<T> {
+    /// Get the reference of the element at the specified row and column.
+    ///
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// assert_eq!(matrix.get(2, 1), Some(&6));
+    /// ```
+    pub fn get(&self, row: usize, col: usize) -> Option<&T> {
+        if row < self.rows || col < self.cols {
+            Some(&self.data[self.rows * col + row])
+        } else {
+            None
+        }
+    }
+
+    /// Get the mutable reference of the element at the specified row and column.
+    /// 
+    /// # Example
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let mut matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// if let Some(elem) = matrix.get_mut(2, 1) {
+    ///     *elem = 10;
+    /// }
+    /// assert_eq!(matrix, Matrix::new([[1, 2, 3], [4, 5, 10]]));
+    /// ```
+    pub fn get_mut(&mut self, row: usize, col: usize) -> Option<&mut T> {
+        if row < self.rows || col < self.cols {
+            Some(&mut self.data[self.rows * col + row])
+        } else {
+            None
+        }
+    }
+}
