@@ -1,5 +1,6 @@
 mod matrix;
 mod ops;
+mod math;
 
 pub use matrix::*;
 
