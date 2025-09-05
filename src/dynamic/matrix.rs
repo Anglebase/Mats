@@ -9,6 +9,13 @@ pub struct Matrix<T = f32> {
 }
 
 impl<T> Matrix<T> {
+    /// Return the actual index position of the elements located in
+    /// rows `row` and columns `col` of the matrix in the original data `self.data`.
+    #[inline(always)]
+    pub(super) const fn at(&self, row:usize, col:usize) -> usize {
+        self.rows * col + row
+    }
+
     /// Creates a new matrix from a given array of arrays.
     ///
     /// # Examples
