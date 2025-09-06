@@ -1,6 +1,8 @@
 # Mats
 
-`Mats` is a matrix math library written in Rust, designed to provide lightweight, efficient, and easy-to-use matrix types and algorithms. It includes commonly used matrix algorithm encapsulation in fields such as linear algebra and computer graphics.
+**WARN**: Better crate: `nalgebra`. This crate has stopped maintenance.
+
+> **An interesting discovery**: The maximum version number for Rust is 1844674407309551615(2^64-1).
 
 ## Features
 

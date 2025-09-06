@@ -955,7 +955,7 @@ dependencies = [
 
 [[package]]
 name = "mats"
-version = "2.0.1"
+version = "18446744073709551615.18446744073709551615.18446744073709551615"
 dependencies = [
  "glium",
  "image",

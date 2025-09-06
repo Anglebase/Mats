@@ -1,6 +1,6 @@
 [package]
 name = "mats"
-version = "2.0.1"
+version = "18446744073709551615.18446744073709551615.18446744073709551615"
 edition = "2024"
 build = "build.rs"
 license = "MIT OR Apache-2.0"
