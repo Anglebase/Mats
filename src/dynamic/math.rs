@@ -1,3 +1,5 @@
+use std::mem::swap;
+
 use super::{Matrix, MatrixError};
 use crate::Zero;
 
@@ -42,6 +44,56 @@ impl<T: Copy> Matrix<T> {
     #[inline]
     pub fn T(&self) -> Self {
         self.transpose()
+    }
+
+    /// Transpose the matrix in place.
+    ///
+    /// # Examples
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let mut m = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// m.transpose_self();
+    /// assert_eq!(m, Matrix::new([[1, 4], [2, 5], [3, 6]]));
+    /// ```
+    #[inline]
+    pub fn transpose_self(&mut self) {
+        const NEXT: fn(usize, usize, usize) -> usize = |i, m, n| (i % m) * n + i / m;
+        for i in 0..self.rows * self.cols {
+            let mut next = NEXT(i, self.rows, self.cols);
+            while next > i {
+                next = NEXT(next, self.rows, self.cols);
+            }
+            if i == next {
+                let mut current = i;
+                let mut before = NEXT(current, self.cols, self.rows);
+                while before != i {
+                    self.data.swap(current, before);
+                    current = before;
+                    before = NEXT(current, self.cols, self.rows);
+                }
+            }
+        }
+        swap(&mut self.rows, &mut self.cols);
+    }
+
+    /// Transpose the matrix in place.
+    ///
+    /// # Note
+    /// This is a shorthand for `transpose_self()`.
+    ///
+    /// # Examples
+    /// ```
+    /// use mats::dynamic::Matrix;
+    ///
+    /// let mut m = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+    /// m.T_self();
+    /// assert_eq!(m, Matrix::new([[1, 4], [2, 5], [3, 6]]));
+    /// ```
+    #[allow(non_snake_case)]
+    #[inline]
+    pub fn T_self(&mut self) {
+        self.transpose_self()
     }
 }
 
